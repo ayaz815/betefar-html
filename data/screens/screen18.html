@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @font-face {
+        font-family: "AgencyR";
+        src: url("../fonts/AGENCYR.TTF") format("truetype");
+      }
+
+      .font-agency {
+        font-family: "AgencyR", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="h-screen bg-[#FFC000] flex justify-center">
+    <div class="sm:w-full sm:block hidden"></div>
+    <div
+      class="relative sm:w-[900px] w-full h-full shadow-2xl shadow-black bg-black flex flex-col justify-between"
+      id="screen2FullScreen"
+    >
+      <div
+        id="leftNavigation"
+        class="absolute top-0 left-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
+        onclick="navigateToScreen('./screen17.html')"
+      ></div>
+      <div
+        id="rightNavigation"
+        class="absolute top-0 right-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
+        onclick="navigateToScreen('./screen19.html')"
+      ></div>
+      <img
+        src="../assets/pointer-up.png"
+        alt=""
+        class="absolute sm:w-28 w-40 sm:right-[28%] right-[26%] rotate-12 sm:bottom-[35%] bottom-[40%]"
+      />
+      <div
+        class="h-7 flex justify-between items-center px-[5%] bg-[#FFC000]"
+      ></div>
+      <div class="flex flex-col justify-end">
+        <button
+          class="font-agency text-3xl text-gray-300 bg-transparent hover:border-none border-none focus-visible:outline-none focus:outline-none"
+        >
+          Gå til katalogen
+        </button>
+        <img src="../assets/logo.jpg" alt="" class="w-full px-[5%]" />
+      </div>
+      <button
+        class="flex justify-center items-center font-agency text-3xl text-gray-300 bg-transparent hover:border-none border-none focus-visible:outline-none focus:outline-none"
+      >
+        Eller nyt musikken
+      </button>
+      <div class="w-full bg-[#FFC000]">
+        <hr class="border-black h-[0.1px]" />
+        <p class="py-1 text-xs text-center">@Random Text</p>
+      </div>
+    </div>
+
+    <div class="sm:w-full sm:block hidden"></div>
+
+    <script src="../script.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @font-face {
+        font-family: "AgencyR";
+        src: url("../fonts/AGENCYR.TTF") format("truetype");
+      }
+
+      .font-agency {
+        font-family: "AgencyR", sans-serif;
+      }
+
+      /* Added styling for scrollbar */
+      .scrollable-content {
+        overflow-y: auto;
+        scrollbar-width: thin;
+        /* For Firefox */
+        -ms-overflow-style: none;
+        /* For Internet Explorer */
+      }
+
+      .scrollable-content::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .scrollable-content::-webkit-scrollbar-thumb {
+        background-color: gray;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+
+  <body class="h-screen bg-[#FFC000] flex justify-center">
+    <div class="sm:w-full sm:block hidden"></div>
+
+    <!-- Container with Static Header and Footer -->
+    <div
+      class="sm:w-[900px] w-full h-full shadow-2xl shadow-black bg-black flex flex-col"
+      id="screen2FullScreen"
+    >
+      <div
+        id="leftNavigation"
+        class="absolute top-0 left-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
+        onclick="navigateToScreen('./screen18.html')"
+      ></div>
+      <div
+        id="rightNavigation"
+        class="absolute top-0 right-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
+        onclick="navigateToScreen('../../index.html')"
+      ></div>
+      <!-- Static Header Section -->
+      <div
+        class="h-7 flex justify-between items-center px-[5%] bg-[#FFC000] fixed top-0 w-full sm:w-[900px] z-50"
+      ></div>
+
+      <!-- Scrollable Music Content -->
+      <div
+        class="flex-1 overflow-y-auto scrollable-content mt-7 mb-12"
+        style="padding-top: 20px"
+      >
+        <!-- Dynamically generated music buttons -->
+        <div id="musicContainer"></div>
+      </div>
+
+      <!-- Static Footer Section -->
+      <div class="w-full bg-[#FFC000]">
+        <hr class="border-black h-[0.1px]" />
+        <p class="py-1 text-xs text-center">@Random Text</p>
+      </div>
+    </div>
+
+    <div class="sm:w-full sm:block hidden"></div>
+
+    <!-- Linking the External JS File -->
+    <script src="../script.js" defer></script>
+  </body>
+</html>

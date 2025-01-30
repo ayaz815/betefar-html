@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./data/script.js" defer></script>
+
+    <style>
+      @font-face {
+        font-family: "AgencyR";
+        src: url("./data/fonts/AGENCYR.TTF") format("truetype");
+      }
+
+      .font-agency {
+        font-family: "AgencyR", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="h-screen bg-[#FFC000] flex justify-center">
+    <div class="sm:w-full sm:block hidden"></div>
+    <div
+      class="fullscreen-target sm:w-[900px] w-full h-full bg-black flex flex-col justify-between main-container opacity-0 transition-opacity duration-200"
+      id="screen2FullScreen"
+    >
+      <div
+        id="leftNavigation"
+        class="absolute top-0 left-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
+        onclick="navigateToScreen('./data/screens/screen19.html')"
+      ></div>
+      <div
+        id="rightNavigation"
+        class="absolute top-0 right-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
+        onclick="navigateToScreen('./data/screens/screen1.html')"
+      ></div>
+
+      <div class="h-12 flex justify-between items-center px-[5%] bg-[#FFC000]">
+        <!-- <p class="font-bold">10:09</p> -->
+        <!-- <img src="data/signals.png" alt="" class="w-20 pt-1" /> -->
+      </div>
+      <div class="flex flex-col justify-end items-center h-full pb-2">
+        <img
+          src="./data/assets/quiz.png"
+          alt=""
+          class="w-1/4 h-auto mb-5 mt-0"
+        />
+        <img
+          src="data/assets/logo.jpg"
+          alt=""
+          class="w-full px-[5%] mb-3 mt-0"
+        />
+      </div>
+      <button
+        class="flex justify-center items-start h-full w-full pt-2 font-agency text-3xl text-[#FFC000] bg-transparent hover:border-none border-none focus-visible:outline-none focus:outline-none"
+      >
+        Name of Quiz
+      </button>
+      <div class="w-full bg-[#FFC000]">
+        <hr class="border-black h-[0.1px]" />
+        <p class="py-1 text-xs text-center">@Random Text</p>
+      </div>
+    </div>
+
+    <div class="sm:w-full sm:block hidden"></div>
+  </body>
+</html>

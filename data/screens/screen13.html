@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @font-face {
+        font-family: "AgencyFB";
+        src: url("../fonts/AGENCYB.TTF") format("truetype");
+      }
+
+      @font-face {
+        font-family: "AGENCYR";
+        src: url("../fonts/AGENCYR.TTF") format("truetype");
+      }
+
+      @font-face {
+        font-family: "ArialBlack";
+        src: url("../fonts/ariblk.ttf") format("truetype");
+      }
+
+      .font-agency {
+        font-family: "AGENCYR", sans-serif;
+      }
+
+      .font-aptos {
+        font-family: "Aptos", sans-serif;
+      }
+
+      .font-arial-black {
+        font-family: "Arial Black", sans-serif;
+      }
+    </style>
+  </head>
+
+  <!-- Added data-audio-src attribute to specify a different music file -->
+
+  <body
+    class="h-screen bg-[#FFC000] flex justify-center overflow-hidden"
+    data-music-src="../musicFiles/music12.mp3"
+    data-audio-src="../audioFiles/audio1.mp3"
+  >
+    <div class="sm:w-full sm:block hidden"></div>
+
+    <!-- Main Container -->
+    <div
+      class="fullscreen-target sm:w-[1000px] md:w-[1700px] lg:w-[1000px] xl:w-[1000px] w-full h-screen bg-[#FFC000] shadow-2xl shadow-black flex flex-col main-container opacity-0 transition-opacity duration-500"
+      id="screen2FullScreen"
+    >
+      <div
+        id="leftNavigation"
+        class="absolute top-0 left-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
+        onclick="navigateToScreen('./screen1.html')"
+      ></div>
+      <div
+        id="rightNavigation"
+        class="absolute top-0 right-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
+        onclick="navigateToScreen('./screen3.html')"
+      ></div>
+      <!-- <div
+        class="h-7 flex justify-between items-center px-[5%] header-section"
+      ></div> -->
+      <!-- <hr class="border-black" /> -->
+      <div class="relative title-section">
+        <h1
+          class="sm:text-4xl text-5xl py-[2%] text-black text-center font-agency"
+        >
+          01.
+        </h1>
+        <h1
+          class="sm:text-4xl text-5xl py-[2%] text-black text-center font-agency"
+        >
+          Melodien
+        </h1>
+      </div>
+      <div>
+        <img
+          src="../assets/pointer-down.png"
+          alt=""
+          class="absolute w-[6rem] sm:w-[5rem] md:w-[5rem] lg:w-[5rem] sm:right-4 md:right-4 lg:right-4 right-3 sm:top-22 md:top-14 lg:top-14 top-16"
+        />
+      </div>
+
+      <!-- Music Section with Hover Message -->
+      <div
+        class="bg-black py-[2%] flex flex-col items-center justify-center music-section flex-grow"
+      >
+        <p
+          class="sm:text-lg text-lg text-center font-bold text-[#FFC000] px-[5%] py-2 mb-10 music-titl font-arial-black"
+        >
+          Spill av melodien
+        </p>
+        <button
+          id="playBtn1"
+          class="play-btn relative group bg-transparent hover:border-none border-none focus-visible:outline-none focus:outline-none transition-transform duration-300 hover:scale-105"
+        >
+          <img
+            id="playImg1"
+            src="../assets/play-red1.png"
+            alt="Play Music"
+            class="sm:w-[68px] w-14 right-1 top-4 py-5 sm:py-2 play-image"
+          />
+          <!-- Tooltip -->
+          <span
+            class="tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max text-xs bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+          </span>
+        </button>
+        <input
+          type="range"
+          id="seekBar1"
+          class="seek-bar w-[80%] h-[3px] my-4 bg-gray-300 accent-gray-500 rounded-lg cursor-pointer focus:outline-none"
+        />
+      </div>
+
+      <!-- Question Section (Smaller Height) -->
+      <div
+        class="relative question-section h-[90px] py-1 flex items-center justify-center"
+      >
+        <h1
+          class="sm:text-4xl text-5xl text-black text-center font-normal font-agency"
+        >
+          Spørsmålet
+        </h1>
+        <img
+          src="../assets/pointer-down.png"
+          alt=""
+          class="absolute w-[6rem] sm:w-[5rem] md:w-[5rem] lg:w-[5rem] sm:right-4 md:right-4 lg:right-4 right-3 sm:top-20 md:top-14 lg:top-[-0.75rem] top-6"
+        />
+      </div>
+
+      <!-- Mic Section with Hover Message (Small Height) -->
+      <div
+        class="bg-black flex flex-col items-center justify-center mic-section toggle-question-area cursor-pointer sm:h-[330px] md:h-[270px] lg:h-[330px] h-[300px]"
+        id="screen2FullScreen"
+      >
+        <p
+          class="sm:text-md text-lg text-center font-bold text-[#FFC000] px-[10%] py-2 mb-[3rem] question-text font-arial-medium"
+        >
+          Hva er navnet på den som synger her?
+        </p>
+        <button
+          class="speaker-btn relative group mb-4 sm:mb-0 md:mb-4 lg:mb-4 bg-transparent hover:border-none border-none focus-visible:outline-none focus:outline-none"
+        >
+          <img
+            src="../assets/speaker.jpg"
+            alt="Speaker"
+            class="sm:w-16 w-14 mic-icon"
+          />
+          <!-- Tooltip -->
+          <span
+            class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max text-xs bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+            Play Audio
+          </span>
+        </button>
+      </div>
+
+      <!-- Answer Section (Increased Height) -->
+      <div
+        class="flex flex-col justify-between items-center sm:h-[210px] h-[200px] answer-section toggle-answer-area cursor-pointer"
+      >
+        <div class="flex flex-col items-center">
+          <p class="text-sm font-bold answer-text font-arial-black">
+            Det korrekt svaret er
+          </p>
+          <p
+            class="text-xl pt-2 answer-text opacity-0 pointer-events-none transition-all duration-300 font-aptos"
+          >
+            Crystal Williams 1956
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer Section (Visible and Fixed) -->
+      <div class="w-full footer-section py-4">
+        <p class="text-xs text-center">@Random Text</p>
+      </div>
+    </div>
+
+    <div class="sm:w-full sm:block hidden"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../script.js" defer></script>
+  </body>
+</html>

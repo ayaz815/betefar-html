@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @font-face {
+        font-family: "AgencyR";
+        src: url("../fonts/AGENCYR.TTF") format("truetype");
+      }
+
+      @font-face {
+        font-family: "AGENCYB";
+        src: url("../fonts/AGENCYB.TTF") format("truetype");
+      }
+
+      @font-face {
+        font-family: "Arial Black";
+        src: url("../fonts/ariblk.ttf") format("truetype");
+      }
+
+      .font-agency {
+        font-family: "AGENCYB", sans-serif;
+      }
+
+      .font-arial-black {
+        font-family: "Arial Black", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="h-screen bg-[#FFC000] flex justify-center">
+    <div class="sm:w-full sm:block hidden"></div>
+    <!-- <a
+      href="../screens/screen3.html"
+      class="absolute w-[50%] h-screen z-10 left-0"
+    ></a>
+    <a
+      href="../../index.html"
+      class="absolute w-[50%] h-screen z-10 right-0"
+    ></a> -->
+
+    <!-- Left Panel -->
+    <div
+      class="relative sm:w-[900px] w-full h-full bg-[#FFC000] shadow-2xl shadow-black flex flex-col justify-between"
+      id="screen2FullScreen"
+    >
+      <div
+        id="leftNavigation"
+        class="absolute top-0 left-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
+        onclick="navigateToScreen('../../index.html')"
+      ></div>
+      <div
+        id="rightNavigation"
+        class="absolute top-0 right-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
+        onclick="navigateToScreen('./screen2.html')"
+      ></div>
+      <img
+        src="../assets/file.png"
+        alt=""
+        class="absolute sm:w-19 w-[6rem] sm:right-8 right-12 sm:top-[30%] top-[28%]"
+      />
+      <img
+        src="../assets/pointer-up.png"
+        alt=""
+        class="absolute sm:w-28 w-[9rem] sm:right-[2rem] right-[3rem] sm:bottom-[11rem] bottom-[17rem]"
+      />
+      <div class="h-7 flex justify-between items-center px-[5%]"></div>
+      <div
+        class="sm:py-[10%] py-[10%] px-[12%] h-full sm:text-base text-xl leading-relaxed"
+      >
+        <p class="py-3">
+          Dette er en quiz som kan løses på ulike måter. Les mer om dette i
+          instruksjonen.
+        </p>
+        <p class="py-0">Dokumentet får du opp ved à klikke på dette ikonet.</p>
+        <div class="w-[70%]">
+          <p class="py-3">Dokumentet består av 2 deler.</p>
+          <p class="">1. Instruks</p>
+          <p class="text-nowrap">2. Oppgavebesvarelser</p>
+        </div>
+        <h1
+          class="sm:text-3xl text-4xl font-extrabold mt-10 pt-7 font-arial-black"
+        >
+          Start quiz
+        </h1>
+      </div>
+      <div class="w-full">
+        <!-- <hr class="border-black h-[0.1px]" /> -->
+        <p class="py-1 text-xs text-center">@Random Text</p>
+      </div>
+    </div>
+
+    <div class="sm:w-full sm:block hidden"></div>
+
+    <script src="../script.js" defer></script>
+  </body>
+</html>
