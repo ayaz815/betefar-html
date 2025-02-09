@@ -1,45 +1,4 @@
 document.addEventListener("DOMContentLoaded", async function () {
-  // try {
-  //   // Fetch content from the server
-  //   const response = await fetch("http://localhost:4000/save-form", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       page: 1, // Assuming you are testing for page 1
-  //     }),
-  //   });
-
-  //   console.log("Response object:", response); // Log the entire response object
-
-  //   if (!response.ok) {
-  //     throw new Error(`Failed to fetch content. Status: ${response.status}`);
-  //   }
-
-  //   const data = await response.json();
-  //   console.log("Fetched data:", data); // Log the fetched data for verification
-
-  //   // Update HTML elements with the fetched content
-  //   document.querySelector("#question-text").textContent =
-  //     data.question || "Default Question";
-  //   document.querySelector("#answer-text").textContent =
-  //     data.answer || "Default Answer";
-  //   document.querySelector(".title-section h1").textContent =
-  //     data.firmNaming || "Default Firm Naming";
-
-  //   console.log("HTML content updated dynamically.");
-  // } catch (error) {
-  //   console.error("Error fetching or updating HTML content:", error);
-  // }
-
-  // // Fetch the screen number from the URL or assign manually
-  // const screenNumber = parseInt(
-  //   window.location.href.match(/screen(\d+)/)?.[1] || 1
-  // ); // Defaults to screen1
-
-  // const page = window.location.pathname.match(/screen(\d+)/)?.[1] || "1";
-
   const jsonFilePath = ".././content/content.json";
 
   fetch(jsonFilePath)
