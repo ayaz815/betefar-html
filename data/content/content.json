@@ -1,17 +1,205 @@
 {
-  "screen1": {
-    "question": "fgsd",
-    "answer": "sdfsd",
-    "firmNaming": "music"
-  },
-  "screen2": {
-    "question": "qwqw",
-    "answer": "wqq",
-    "firmNaming": "music"
-  },
-  "screen3": {
-    "question": "df",
-    "answer": "dsf",
-    "firmNaming": "music"
-  }
+  "quizName": "Verdenskunsten I",
+  "questions": [
+    {
+      "id": 1,
+      "type": "multiple",
+      "question": "Hva heter kunstneren som skapte dette maleriet?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/1_Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/Free%20Classical%20Music%20(For%20Videos)%20-%20A%20Better%20Future%20by%20Miguel%20Johnson.mp3",
+      "answer": "",
+      "bgColor": "#000000",
+      "notes": "<h2>Leonardo da Vinci</h2><p>Dette er kanskje verdens mest berømte kunstverk. Portrettet er kjent for sitt mystiske smil og Leonardos bruk av sfumato-teknikken, som skaper myke overganger mellom farger og former. Maleriet henger i Louvre i Paris og tiltrekker seg millioner av besøkende hvert år.</p>",
+      "options": [
+        "Rembrandt",
+        "Leonardo da Vinci",
+        "Johannes Vermeer"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "bit",
+      "question": "Hva er tittelen på dette maleriet?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/14_Grant-Wood-American-Gothic-detail.webp",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/Background%20%26%20Piano%20(Free%20Music)%20-%20COPENHAGEN%20by%20%40scandinavianz.mp3",
+      "answer": "Am",
+      "bgColor": "#000000",
+      "notes": "<h2>Grant Wood</h2><p>Et av de mest kjente bildene i amerikansk kunst. Det viser en bonde og hans datter (ofte antatt å være hans kone) foran et hus i nygotisk stil. Bildet har blitt et ikon for den amerikanske pionerånden, men også gjenstand for mye parodi.</p>",
+      "bitSize": "4",
+      "bitRemovalDuration": "192"
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "question": "Hva er tittelen på dette maleriet?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/8_Brudeferden%20i%20hardanger.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/'In%20The%20Desert'%20by%20%40SavfkMusic%20%20%20%20Epic%20Instrumental%20Music%20(No%20Copyright).mp3",
+      "answer": "Brudeferden i Hardanger",
+      "bgColor": "#000000",
+      "notes": "<h2>Brudeferd i Hardanger</h2><p>Dette er et maleri av Adolph Tidemand (figurene) og Hans Gude (landskapet). Motivet finnes i flere versjoner. Mest kjent er originalbildet, malt vinteren 1847–1848 i Düsseldorf, som eies av Nasjonalgalleriet.</p><p><br></p><p>Tidemands og Gudes fellesarbeid er et typisk uttrykk for nasjonalromantikken i norsk kunst, med et festkledt brudefølge i båt på en solfylt vestlandsfjord. Bildet ble innkjøpt av Christiania Kunstforening og utloddet til foreningens medlemmer høsten 1848. Samme året ble en gjentakelse malt, der den berømte fiolinisten Ole Bull satt modell for felespilleren i båten.</p>"
+    },
+    {
+      "id": 4,
+      "type": "multiple",
+      "question": "Hva er tittelen på dette maleriet?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/3_Vincent_van_Gogh_-_Starry_Night_Over_the_Rhne_-_(MeisterDrucke-695883).jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/'In%20The%20Desert'%20by%20%40SavfkMusic%20%20%20%20Epic%20Instrumental%20Music%20(No%20Copyright).mp3",
+      "answer": "",
+      "bgColor": "#000000",
+      "notes": "<h2>Stjernenatt</h2><p>Kunstner: Vincent van Gogh</p><p>Malt mens Van Gogh var innlagt på et asyl i Frankrike. De virvlende formene på himmelen og de sterke blå- og gultonene gir bildet en unik energi og bevegelse. Det reflekterer kunstnerens turbulente indre liv og hans fascinasjon for nattens lys.</p><p><br></p><p>Malt mens Van Gogh var innlagt på et asyl i Frankrike. De virvlende formene på himmelen og de sterke blå- og gultonene gir bildet en unik energi og bevegelse. Det reflekterer kunstnerens turbulente indre liv og hans fascinasjon for nattens lys.</p>",
+      "options": [
+        "Stjernenatt",
+        "Nattens lys",
+        "Natten glitrer"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "bit",
+      "question": "Hviket maleri er dette?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/2_Edvard_Munch_-_The_Scream_-_Google_Art_Project.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/Calm%20Music%20(No%20Copyright)%20%20Dawn%20by%20%40Sappheiros.mp3",
+      "answer": "",
+      "bgColor": "#000000",
+      "notes": "<h2>Skrik - Kunstner: Edvard Munch</h2><p>Norges mest ikoniske bidrag til kunsthistorien. Maleriet viser en skikkelse i eksistensiell angst mot en blodrød himmel. Munch ønsket å fange en følelse av et \"stort, uendelig skrik gjennom naturen\". Verket regnes som en bærebjelke i ekspresjonismen.</p>",
+      "bitSize": "4",
+      "bitRemovalDuration": "48"
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "question": "Hva er tittelen på dette maleriet?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/4_1665_Girl_with_a_Pearl_Earring.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/%5BCopyright%20Free%20Romantic%20Music%5D%20-%20White%20Petals%20by%20Keys%20Of%20Moon%20Music.mp3",
+      "answer": "Piken med perleøredobb",
+      "bgColor": "#000000",
+      "notes": "<h3><img src=\"https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/11993518.webp\"></h3><h3><br></h3><h2>Piken med perleøredobben</h2><p>Kunstner: Johannes Vermeer</p><p>Ofte kalt \"Nordens Mona Lisa\". Dette er ikke et tradisjonelt portrett, men en tronie – et karakterstudie. Vermeer er mesterlig i sin behandling av lys, spesielt i måten lyset reflekteres i den store perlen og i jentas øyne.</p>"
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "question": "Hva het kunstneren som malte dette?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/16_Friheden-Delacroix-fb.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/Background%20%26%20Piano%20(Free%20Music)%20-%20COPENHAGEN%20by%20%40scandinavianz.mp3",
+      "answer": "Eugène Delacroix",
+      "bgColor": "#000000",
+      "notes": "<h2>Friheten leder folket</h2><p>Kunstner: Eugène Delacroix</p><p>Et symbol på den franske revolusjonsånden. Maleriet viser en personifisering av Friheten (Marianne) som leder folket over barrikadene med trikoloren i hånden. Verket er preget av romantikkens energi og dramatiske komposisjon.</p>"
+    },
+    {
+      "id": 8,
+      "type": "multiple",
+      "question": "Hvem malte dette maleriet?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/15_A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.png",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/Instrumental%20%26%20Background%20Rock%20(Free%20Music)%20-%20HOMESTEAD%20by%20Punch%20Deck.mp3",
+      "answer": "",
+      "bgColor": "#000000",
+      "notes": "<h2>Søndag ettermiddag på øya Grande Jatte</h2><p>Kunstner: Georges Seurat</p><p>Dette er det mest kjente eksemplet på pointillisme, der bildet er bygget opp av tusenvis av små prikker med ren farge. Seurat brukte to år på dette monumentale verket som skildrer fritidslivet i Paris.</p>",
+      "options": [
+        "Claude Monet",
+        "Georges Seurat",
+        "Diego Velázquez"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "bit",
+      "question": "Hvor befinner dette maleriet seg?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/9_Adams_skapelse.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/%5BCopyright%20Free%20Chill%20Background%20Music%5D%20-%20Way%20Home%20by%20%40tokyowalker4038.mp3",
+      "answer": "Det sixtinske kapellet(Vatikanet, Roma)",
+      "bgColor": "#000000",
+      "notes": "<h2>Adams skapelse - Kunstner: Michelangelo</h2><p>Denne ikoniske fresken i taket i Det sixtinske kapell viser Gud som gir liv til Adam. Det nesten-berøringspunktet mellom de to hendene er et av de mest reproduserte motivene i verden og symboliserer menneskehetens guddommelige gnist.</p>",
+      "bitSize": "4",
+      "bitRemovalDuration": "192"
+    },
+    {
+      "id": 10,
+      "type": "bit",
+      "question": "Hva er tittelen på dette maleriet? (2-5)",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/10_nachtwache-100~_v-1600x900_c-1697121231677.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/Ethereal%20%26%20Ambient%20(Free%20Music)%20-%20WONDER%20by%20Nomyn.mp3",
+      "answer": "",
+      "bgColor": "#000000",
+      "notes": "<h2>Nattvakten - Rembrandt van Rijn</h2><p>Kjent for sin enorme størrelse og dramatiske bruk av lys og skygge (chiaroscuro). Maleriet viser et byvern i Amsterdam som gjør seg klar til utmarsj. Rembrandt ga gruppeportrettet en helt ny form for liv og bevegelse.</p>",
+      "bitSize": "4",
+      "bitRemovalDuration": "192"
+    },
+    {
+      "id": 11,
+      "type": "multiple",
+      "question": "Hven skal kvinnen i midten på dette maleriet forestille?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/7_El_nacimiento_de_Venus%2C_por_Sandro_Botticelli.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/Futuristic%20%26%20Synthwave%20(Royalty%20Free%20Music)%20-%20FULGOR%20by%20Hiracutch.mp3",
+      "answer": "",
+      "bgColor": "#000000",
+      "notes": "<h2>Fødselen til Venus - Kunstner: Sandro Botticelli</h2><p>Et mesterverk fra den italienske renessansen. Det viser gudinnen Venus som stiger opp fra havet på et skjell. Bildet er kjent for sin elegante linjebruk, myke farger og feiringen av klassisk mytologi og skjønnhet.</p>",
+      "options": [
+        "Venus",
+        "Eva",
+        "Maria"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "bit",
+      "question": "Hvilket maleri er dette?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/6_The-Last-Supper2.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/Middle%20Eastern%20%26%20Latin%20(Royalty%20Free%20Music)%20-%20SILUETAS%20DE%20ARABIA%20by%20Justin%20Allan%20Arnold.mp3",
+      "answer": "",
+      "bgColor": "#000000",
+      "notes": "<h2>Den siste nattverd - Kunstner: Leonardo da Vinci</h2><p>Dette veggmaleriet i Milano viser øyeblikket Jesus kunngjør at en av disiplene vil forråde ham. Leonardo fanget de ulike reaksjonene og følelsene til disiplene med banebrytende bruk av perspektiv og psykologisk dybde.</p>",
+      "bitSize": "8",
+      "bitRemovalDuration": "192"
+    },
+    {
+      "id": 13,
+      "type": "multiple",
+      "question": "Hvilken hendelse skal forestiller dette maleriet forestille?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/5_Guernica2.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/Futuristic%20%26%20Synthwave%20(Royalty%20Free%20Music)%20-%20FULGOR%20by%20Hiracutch.mp3",
+      "answer": "",
+      "bgColor": "#000000",
+      "notes": "<h3><img src=\"https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/Guernica.jpg\"></h3><h2>Guernica - Kunstner: Pablo Picasso</h2><p>Dette enorme monokrome maleriet er et av de mektigste anti-krigssymbolene i historien. Det skildrer lidelsene under bombingen av den baskiske byen Guernica under den spanske borgerkrigen, fylt med fragmenterte figurer og symbolsk kaos.</p>",
+      "options": [
+        "Et eventyr",
+        "Bomber",
+        "Drømmer"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "question": "Hva heter kunstneren som skapte dette maleriet?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/13_Claude-Monet-Nympheas.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/Calm%20Music%20(No%20Copyright)%20%20Dawn%20by%20%40Sappheiros.mp3",
+      "answer": "Claud Monet",
+      "bgColor": "#000000",
+      "notes": "<h3><img src=\"https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/Claude_Monet_1899_Nadar_crop.jpg\"></h3><h2>Vannliljer (serien) - Kunstner: Claude Monet</h2><h3>Monet brukte de siste 30 årene av sitt liv på å male hagen sin i Giverny. Serien fokuserer på hvordan lyset endrer seg på vannoverflaten og vannliljene, og la grunnlaget for den moderne abstrakte kunsten.</h3>"
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "question": "Hva heter kunstneren som malte dette?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/12_maxresdefault2.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/Ethereal%20%26%20Ambient%20(Free%20Music)%20-%20WONDER%20by%20Nomyn.mp3",
+      "answer": "Salvador Dali",
+      "bgColor": "#000000",
+      "notes": "<h3><strong><img src=\"https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/SalvadorDali.jpg\"></strong></h3><h2>Persepsjonens gjenstridighet (De smeltende klokkene)</h2><h2>Kunstner: Salvador Dalí</h2><p>Det ultimate symbolet på surrealismen. De smeltende urene i et øde landskap utfordrer vår forståelse av tid og virkelighet. Dalí brukte ofte drømmelignende motiver for å utforske det underbevisste.</p>"
+    },
+    {
+      "id": 16,
+      "type": "multiple",
+      "question": "Hva heter kunstneren som skapte dette?",
+      "image": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/11_papagalopsaro-klimt-kiss-4-768x951.jpg",
+      "audio": "https://bestefar-frontend.s3.eu-north-1.amazonaws.com/audioFiles/'In%20The%20Desert'%20by%20%40SavfkMusic%20%20%20%20Epic%20Instrumental%20Music%20(No%20Copyright).mp3",
+      "answer": "",
+      "bgColor": "#000000",
+      "notes": "<h3><img src=\"https://bestefar-frontend.s3.eu-north-1.amazonaws.com/imageFiles/gustav-klimt.jpg\"></h3><h2>Kysset - Kunstner: Gustav Klimt</h2><h3>Et høydepunkt fra jugendstilen og Klimts \"gylne periode\". Maleriet er rikt dekorert med gullblad og viser et par omslynget i et intimt kyss. Det forener symbolisme og dekorativ kunst på en unik, sanselig måte.</h3>",
+      "options": [
+        "Ernest Kruger",
+        "Gustav Klimt",
+        "Rogolo Carry"
+      ]
+    }
+  ]
 }

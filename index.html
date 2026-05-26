@@ -5,64 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Music App</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="./data/script.js" defer></script>
-
     <style>
       @font-face {
         font-family: "AgencyR";
         src: url("./data/fonts/AGENCYR.TTF") format("truetype");
       }
-
       .font-agency {
         font-family: "AgencyR", sans-serif;
       }
     </style>
   </head>
-
-  <body class="h-screen bg-[#FFC000] flex justify-center">
-    <div class="sm:w-full sm:block hidden"></div>
-    <div
-      class="fullscreen-target sm:w-[900px] w-full h-full bg-black flex flex-col justify-between main-container opacity-0 transition-opacity duration-200"
-      id="screen2FullScreen"
+  <body class="font-agency bg-black h-screen overflow-hidden">
+    <a
+      id="quizLink"
+      href="#"
+      class="h-full flex flex-col items-center pt-[22vh] mt-[10vh] md:mt-[2vh]"
     >
-      <div
-        id="leftNavigation"
-        class="absolute top-0 left-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
-        onclick="navigateToScreen('./data/screens/screen19.html')"
-      ></div>
-      <div
-        id="rightNavigation"
-        class="absolute top-0 right-0 w-[10%] h-full z-20 cursor-pointer bg-transparent transition-all"
-        onclick="navigateToScreen('./data/screens/screen1.html')"
-      ></div>
-
-      <div class="h-12 flex justify-between items-center px-[5%] bg-[#FFC000]">
-        <!-- <p class="font-bold">10:09</p> -->
-        <!-- <img src="data/signals.png" alt="" class="w-20 pt-1" /> -->
-      </div>
-      <div class="flex flex-col justify-end items-center h-full pb-2">
-        <img
-          src="./data/assets/quiz.png"
-          alt=""
-          class="w-1/4 h-auto mb-5 mt-0"
-        />
-        <img
-          src="data/assets/logo.jpg"
-          alt=""
-          class="w-full px-[5%] mb-3 mt-0"
-        />
-      </div>
-      <button
-        class="flex justify-center items-start h-full w-full pt-2 font-agency text-3xl text-[#FFC000] bg-transparent hover:border-none border-none focus-visible:outline-none focus:outline-none"
+      <h2 class="text-[#FFC000] text-md md:text-2xl tracking-widest">
+        BildeQuiz om:
+      </h2>
+      <h1
+        id="quizTitle"
+        class="text-[#9DC3E7] text-5xl md:text-7xl mt-6 md:mt-7"
       >
-        Name of Quiz
-      </button>
-      <div class="w-full bg-[#FFC000]">
-        <hr class="border-black h-[0.1px]" />
-        <p class="py-1 text-xs text-center">@Random Text</p>
-      </div>
-    </div>
+        ...
+      </h1>
+      <img
+        src="./data/assets/logo.jpg"
+        alt=""
+        class="w-[60%] md:w-[30%] mt-auto mb-[53vh] md:mb-[45vh]"
+      />
+    </a>
+    <script>
+      fetch("./data/content/content.json")
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("quizTitle").textContent =
+            data.quizName || "Quiz";
+          document.getElementById("quizLink").href =
+            "./data/screens/dynamicQuiz.html";
+        })
+        .catch((err) => console.error("Error loading JSON:", err));
+    </script>
+    <script>
+      const quizLink = document.getElementById("quizLink");
 
-    <div class="sm:w-full sm:block hidden"></div>
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          // Go to quiz (same as click)
+          quizLink.click();
+        }
+
+        if (e.key === "ArrowLeft") {
+          // optional UX feedback (no navigation)
+          quizLink.style.transform = "scale(0.98)";
+          setTimeout(() => {
+            quizLink.style.transform = "scale(1)";
+          }, 120);
+        }
+      });
+    </script>
   </body>
 </html>

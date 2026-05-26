@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Display</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      @font-face {
+        font-family: "AgencyR";
+        src: url("../fonts/AGENCYR.TTF") format("truetype");
+      }
+      @font-face {
+        font-family: "AGENCYB";
+        src: url("../fonts/AGENCYB.TTF") format("truetype");
+      }
+      @font-face {
+        font-family: "AgencyFB";
+        src: url("../fonts/AGENCYB.TTF") format("truetype");
+      }
+      @font-face {
+        font-family: "AGENCYR";
+        src: url("../fonts/AGENCYR.TTF") format("truetype");
+      }
+      @font-face {
+        font-family: "Arial Black";
+        src: url("../fonts/ariblk.ttf") format("truetype");
+      }
+
+      .font-agency {
+        font-family: "AGENCYB", sans-serif;
+      }
+      .font-agencyr {
+        font-family: "AGENCYR", "AgencyR", sans-serif;
+      }
+      .fade {
+        transition: opacity 0.6s ease-in-out;
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: black;
+        cursor: none; /* hide cursor on display screen */
+      }
+
+      /* ── tiny invisible open-display trigger (bottom-center) ── */
+      #open-display-zone {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 30px;
+        z-index: 999;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .bg-contain-center {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color: black;
+      }
+
+      .background-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+      .content-overlay {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ── SINGLE ── */
+      #question-container-single {
+        position: absolute;
+        left: 50%;
+        top: 40%;
+        transform: translateX(-50%);
+        width: 62%;
+        background-color: rgba(0, 0, 0, 0.68);
+        padding: 18px 28px;
+        transition: opacity 0.6s ease-in-out;
+      }
+      #question-container-single .q-text {
+        font-family: "AGENCYR", "AgencyR", sans-serif;
+        font-size: clamp(1.6rem, 3.4vw, 3rem);
+        line-height: 1.25;
+        color: white;
+        text-align: center;
+        transition: color 0.6s ease-in-out;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      /* ── MULTIPLE ── */
+      #question-multiple {
+        position: absolute;
+        left: 50%;
+        top: 42%;
+        transform: translateX(-50%);
+        width: 62%;
+        background-color: rgba(0, 0, 0, 0.68);
+        padding: 18px 28px;
+        transition: opacity 0.6s ease-in-out;
+        font-family: "AGENCYR", "AgencyR", sans-serif;
+        font-size: clamp(1.6rem, 3.4vw, 3rem);
+        color: white;
+        text-align: center;
+        line-height: 1.25;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      #answers-multiple {
+        position: absolute;
+        left: 45%;
+        top: 30%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        transition: opacity 0.6s ease-in-out;
+      }
+      .answer-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .answer-badge {
+        position: relative;
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "AGENCYB", sans-serif;
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        flex-shrink: 0;
+        overflow: hidden;
+        box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.35),
+          inset 0 2px 0 rgba(255, 255, 255, 0.2), 0 2px 6px rgba(0, 0, 0, 0.4);
+      }
+      .answer-badge::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 52%;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.32) 0%,
+          rgba(255, 255, 255, 0.06) 100%
+        );
+        border-radius: 12px 12px 60% 60%/12px 12px 40% 40%;
+        pointer-events: none;
+      }
+      .badge-a {
+        background: radial-gradient(circle at 38% 32%, #f05545, #7d150d);
+      }
+      .badge-b {
+        background: radial-gradient(circle at 38% 32%, #2ecc71, #145a30);
+      }
+      .badge-c {
+        background: radial-gradient(circle at 38% 32%, #5dade2, #154f7a);
+      }
+      .badge-d {
+        background: radial-gradient(circle at 38% 32%, #b07fd4, #4a1a6b);
+      }
+      .badge-e {
+        background: radial-gradient(circle at 38% 32%, #f5a623, #8a5500);
+      }
+      .answer-text {
+        background-color: rgba(35, 43, 58, 0.88);
+        color: white;
+        font-family: "AGENCYR", "AgencyR", sans-serif;
+        font-size: clamp(1.1rem, 2.2vw, 1.7rem);
+        padding: 0 22px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+      }
+
+      /* ── BIT-BY-BIT ── */
+      #textDiv {
+        position: absolute;
+        top: 42%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 62%;
+        font-family: "AGENCYR", "AgencyR", sans-serif;
+        font-weight: normal;
+        font-size: clamp(1.6rem, 3.4vw, 3rem);
+        line-height: 1.25;
+        color: white;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.68);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        z-index: 10;
+      }
+      #imageDiv {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .image-piece {
+        background-color: black;
+      }
+
+      #blackScreen {
+        position: absolute;
+        inset: 0;
+        background: black;
+        z-index: 30;
+        color: white;
+        font-family: "AgencyFB";
+        font-size: 2rem;
+        opacity: 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.6s ease-in-out;
+      }
+
+      /* ── WAITING / BLACK ── */
+      #waiting-screen {
+        position: fixed;
+        inset: 0;
+        background: black;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.6s ease-in-out;
+      }
+      #waiting-screen.hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      @media (max-width: 1024px) {
+        #question-container-single {
+          left: 0;
+          right: 0;
+          top: 42%;
+          transform: translateY(-50%);
+          width: 80%;
+          margin: 0 auto;
+          max-width: calc(100% - 40px);
+          padding: 12px 16px;
+        }
+        #question-container-single .q-text {
+          font-size: clamp(1rem, 4.8vw, 1.5rem);
+          line-height: 1.35;
+          display: block;
+          -webkit-line-clamp: unset;
+          overflow: visible;
+        }
+        #question-multiple {
+          left: 0;
+          right: 0;
+          top: 40%;
+          transform: translateY(-50%);
+          width: 80%;
+          margin: 0 auto;
+          max-width: calc(100% - 40px);
+          font-size: clamp(1rem, 4.8vw, 1.5rem);
+          padding: 12px 16px;
+          line-height: 1.35;
+          display: block;
+          -webkit-line-clamp: unset;
+          overflow: visible;
+          max-height: 50vh;
+        }
+        #answers-multiple {
+          left: 50%;
+          top: 42%;
+          transform: translate(-50%, -47%);
+          width: auto;
+          gap: 6px;
+          max-height: 55vh;
+          overflow-y: auto;
+          align-items: flex-start;
+        }
+        .answer-badge {
+          width: 44px;
+          height: 44px;
+          min-height: 44px;
+          font-size: 0.98rem;
+          align-self: stretch;
+        }
+        .answer-text {
+          white-space: normal;
+          word-break: break-word;
+          height: auto;
+          min-height: 44px;
+          padding: 8px 14px;
+          font-size: clamp(0.88rem, 3.8vw, 1.15rem);
+          line-height: 1.3;
+          flex: 0 1 auto;
+          max-width: 60vw;
+        }
+        #textDiv {
+          font-size: clamp(1rem, 4.8vw, 1.5rem);
+          width: 86%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Waiting / black screen shown until first message -->
+    <div id="waiting-screen"></div>
+
+    <!-- Invisible tiny zone at bottom-center — clicking opens this page in a new window if needed -->
+    <div id="open-display-zone" title=""></div>
+
+    <!-- ── SINGLE ── -->
+    <div
+      id="single-container"
+      class="hidden h-screen bg-contain-center relative"
+    >
+      <video
+        id="single-video"
+        class="background-video hidden"
+        autoplay
+        loop
+        muted
+        playsinline
+      ></video>
+      <div class="content-overlay relative h-full w-full overflow-hidden">
+        <div id="question-container-single" class="fade z-10">
+          <div class="q-text"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MULTIPLE ── -->
+    <div
+      id="multiple-container"
+      class="hidden h-screen bg-contain-center relative"
+    >
+      <video
+        id="multiple-video"
+        class="background-video hidden"
+        autoplay
+        loop
+        muted
+        playsinline
+      ></video>
+      <div class="content-overlay h-full w-full relative overflow-hidden">
+        <div id="question-multiple" class="fade z-10 hidden">Loading...</div>
+        <div id="answers-multiple" class="fade hidden z-10"></div>
+      </div>
+    </div>
+
+    <!-- ── BIT-BY-BIT ── -->
+    <div id="bit-container" class="hidden">
+      <div
+        class="flex justify-center items-center h-screen bg-contain-center relative"
+        id="bit-background"
+      >
+        <video
+          id="bit-video"
+          class="background-video hidden"
+          autoplay
+          loop
+          muted
+          playsinline
+        ></video>
+        <div
+          class="content-overlay relative w-full h-full flex flex-col justify-end items-center"
+        >
+          <div id="imageDiv" class="w-full h-full absolute top-0 left-0"></div>
+          <div
+            id="textDiv"
+            class="bg-black/70 p-5 text-white text-4xl mt-auto mb-auto cursor-pointer opacity-100 transition-opacity duration-300 z-10 text-center hidden"
+          ></div>
+          <div id="blackScreen"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* ════════════════════════════════════════════════
+         DISPLAY.HTML  —  pure BroadcastChannel receiver
+         No controls, no badges, cursor hidden.
+         Mirrors every visual state of the controller.
+      ════════════════════════════════════════════════ */
+
+      const bc = new BroadcastChannel("quiz-display");
+
+      const BADGE_COLORS = [
+        "badge-a",
+        "badge-b",
+        "badge-c",
+        "badge-d",
+        "badge-e",
+      ];
+      const LETTERS = ["A", "B", "C", "D", "E"];
+
+      /* ── element refs ── */
+      const waitingScreen = document.getElementById("waiting-screen");
+      const singleContainer = document.getElementById("single-container");
+      const singleVideo = document.getElementById("single-video");
+      const multipleContainer = document.getElementById("multiple-container");
+      const multipleVideo = document.getElementById("multiple-video");
+      const bitContainer = document.getElementById("bit-container");
+      const bitBackground = document.getElementById("bit-background");
+      const bitVideo = document.getElementById("bit-video");
+      const containerSingle = document.getElementById(
+        "question-container-single"
+      );
+      const questionElMultiple = document.getElementById("question-multiple");
+      const answersElMultiple = document.getElementById("answers-multiple");
+      const textDiv = document.getElementById("textDiv");
+      const imageDiv = document.getElementById("imageDiv");
+
+      /* ── helpers ── */
+      function isVideoUrl(url) {
+        if (!url) return false;
+        return [".mp4", ".webm", ".ogg", ".mov"].some((e) =>
+          url.toLowerCase().includes(e)
+        );
+      }
+      function setBackgroundMedia(container, videoEl, mediaUrl, bgColor) {
+        const bg = bgColor && bgColor.trim() ? bgColor.trim() : "#000000";
+        if (isVideoUrl(mediaUrl)) {
+          container.style.backgroundImage = "none";
+          container.style.backgroundColor = bg;
+          videoEl.src = mediaUrl;
+          videoEl.classList.remove("hidden");
+          videoEl.play().catch(() => {});
+        } else {
+          videoEl.classList.add("hidden");
+          videoEl.pause();
+          videoEl.src = "";
+          container.style.backgroundImage = mediaUrl
+            ? `url('${mediaUrl}')`
+            : "none";
+          container.style.backgroundSize = "contain";
+          container.style.backgroundRepeat = "no-repeat";
+          container.style.backgroundPosition = "center 38%";
+          container.style.backgroundColor = bg;
+        }
+      }
+      function fadeOutEl(el, cb) {
+        el.style.opacity = 0;
+        setTimeout(() => {
+          el.classList.add("hidden");
+          if (cb) cb();
+        }, 600);
+      }
+      function fadeInEl(el) {
+        el.classList.remove("hidden");
+        setTimeout(() => {
+          el.style.opacity = 1;
+        }, 10);
+      }
+      function hideWaiting() {
+        waitingScreen.classList.add("hide");
+        setTimeout(() => waitingScreen.remove(), 700);
+      }
+      function hideAll() {
+        singleContainer.classList.add("hidden");
+        multipleContainer.classList.add("hidden");
+        bitContainer.classList.add("hidden");
+      }
+
+      /* ── BIT grid ── */
+      let pieces = [],
+        revealTimeouts = [];
+      function getGridCount(bitSize) {
+        const n = parseInt(bitSize);
+        if (n === 1) return 8;
+        if (n === 2) return 12;
+        return 8;
+      }
+      function getDurationMs(raw) {
+        const n = parseInt(raw);
+        if (n === 112) return 70000;
+        if (n === 192) return 90000;
+        if (!isNaN(n) && n > 0 && n <= 60) return n * 1000;
+        return 3000;
+      }
+      function createGrid(bitSize) {
+        pieces = [];
+        imageDiv.innerHTML = "";
+        const cols = getGridCount(bitSize),
+          rows = cols;
+        imageDiv.style.cssText =
+          "position:absolute;top:0;left:0;width:100%;height:100%;display:grid;overflow:hidden;";
+        const cellSize = Math.ceil(
+          Math.max(window.innerWidth, window.innerHeight) / cols
+        );
+        imageDiv.style.gridTemplateColumns = `repeat(${cols},${cellSize}px)`;
+        imageDiv.style.gridTemplateRows = `repeat(${rows},${cellSize}px)`;
+        for (let i = 0; i < cols * rows; i++) {
+          const p = document.createElement("div");
+          p.classList.add("image-piece");
+          p.style.cssText =
+            "width:100%;height:100%;background-color:black;opacity:1;transition:none;";
+          imageDiv.appendChild(p);
+          pieces.push(p);
+        }
+      }
+      function shuffleArray(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+      function clearRevealTimeouts() {
+        revealTimeouts.forEach((id) => clearTimeout(id));
+        revealTimeouts = [];
+      }
+      function startRevealingBits(bitRemovalDuration) {
+        clearRevealTimeouts();
+        const total = pieces.length;
+        const shuffled = shuffleArray(pieces);
+        const dur = getDurationMs(bitRemovalDuration);
+        const fadeDur = Math.min(300, (dur / total) * 2);
+        shuffled.forEach((piece, idx) => {
+          const delay = Math.round(((idx + 1) / total) * dur);
+          const id = setTimeout(() => {
+            piece.style.transition = `opacity ${fadeDur}ms ease`;
+            piece.style.opacity = "0";
+          }, delay);
+          revealTimeouts.push(id);
+        });
+      }
+      function revealAllPieces() {
+        clearRevealTimeouts();
+        pieces.forEach((p, i) => {
+          const id = setTimeout(() => {
+            p.style.transition = "opacity 300ms ease";
+            p.style.opacity = "0";
+          }, i * 15);
+          revealTimeouts.push(id);
+        });
+      }
+      function smoothRevealAll() {
+        clearRevealTimeouts();
+        const shuffled = shuffleArray(pieces),
+          total = shuffled.length,
+          totalDur = 1800;
+        shuffled.forEach((piece, idx) => {
+          const delay = Math.round((idx / total) * totalDur);
+          const id = setTimeout(() => {
+            piece.style.transition = "opacity 600ms cubic-bezier(0.4,0,0.2,1)";
+            piece.style.opacity = "0";
+          }, delay);
+          revealTimeouts.push(id);
+        });
+        textDiv.style.opacity = 0;
+        setTimeout(() => textDiv.classList.add("hidden"), 200);
+      }
+
+      /* ── multiple helpers ── */
+      function buildAnswerRows(choices) {
+        answersElMultiple.innerHTML = "";
+        choices.forEach((choice, i) => {
+          const row = document.createElement("div");
+          row.className = "answer-row";
+          const badge = document.createElement("div");
+          badge.className = `answer-badge ${BADGE_COLORS[i] || "badge-a"}`;
+          badge.textContent = LETTERS[i] || String.fromCharCode(65 + i);
+          const text = document.createElement("div");
+          text.className = "answer-text";
+          text.textContent = choice;
+          row.appendChild(badge);
+          row.appendChild(text);
+          answersElMultiple.appendChild(row);
+        });
+      }
+
+      /* ════════════════════════════════════════════════
+         BROADCAST RECEIVER
+      ════════════════════════════════════════════════ */
+      bc.onmessage = (e) => {
+        const msg = e.data;
+        if (!msg) return;
+        hideWaiting(); // dismiss black screen on first message
+
+        switch (msg.action) {
+          /* ── SINGLE ── */
+          case "show-single": {
+            hideAll();
+            singleContainer.classList.remove("hidden");
+            setBackgroundMedia(
+              singleContainer,
+              singleVideo,
+              msg.image,
+              msg.bgColor
+            );
+            const textEl = containerSingle.querySelector(".q-text");
+            textEl.textContent = msg.question;
+            if (msg.questionVisible) {
+              textEl.style.color = "white";
+              containerSingle.style.backgroundColor = "rgba(0,0,0,0.68)";
+            } else {
+              textEl.style.color = "transparent";
+              containerSingle.style.backgroundColor = "transparent";
+            }
+            containerSingle.style.opacity = 1;
+            break;
+          }
+          case "toggle-single-question": {
+            const textEl = containerSingle.querySelector(".q-text");
+            if (msg.visible) {
+              textEl.style.color = "white";
+              containerSingle.style.backgroundColor = "rgba(0,0,0,0.68)";
+            } else {
+              textEl.style.color = "transparent";
+              containerSingle.style.backgroundColor = "transparent";
+            }
+            break;
+          }
+
+          /* ── MULTIPLE ── */
+          case "show-multiple": {
+            hideAll();
+            multipleContainer.classList.remove("hidden");
+            setBackgroundMedia(
+              multipleContainer,
+              multipleVideo,
+              msg.image,
+              msg.bgColor
+            );
+            questionElMultiple.textContent = msg.question;
+            buildAnswerRows(msg.options || []);
+            if (msg.showAnswers) {
+              questionElMultiple.classList.add("hidden");
+              questionElMultiple.style.opacity = 0;
+              fadeInEl(answersElMultiple);
+            } else {
+              answersElMultiple.classList.add("hidden");
+              answersElMultiple.style.opacity = 0;
+              questionElMultiple.classList.add("hidden");
+              questionElMultiple.style.opacity = 0;
+            }
+            break;
+          }
+          case "toggle-multiple": {
+            if (msg.showAnswers) {
+              fadeOutEl(questionElMultiple, () => fadeInEl(answersElMultiple));
+            } else {
+              // check current state: if answers visible hide them; else toggle question
+              if (!answersElMultiple.classList.contains("hidden")) {
+                fadeOutEl(answersElMultiple);
+                fadeOutEl(questionElMultiple);
+              } else if (!questionElMultiple.classList.contains("hidden")) {
+                fadeOutEl(questionElMultiple);
+              } else {
+                answersElMultiple.classList.add("hidden");
+                answersElMultiple.style.opacity = 0;
+                fadeInEl(questionElMultiple);
+              }
+            }
+            break;
+          }
+
+          /* ── BIT ── */
+          case "show-bit": {
+            hideAll();
+            clearRevealTimeouts();
+            bitContainer.classList.remove("hidden");
+            setBackgroundMedia(bitBackground, bitVideo, msg.image, msg.bgColor);
+            textDiv.textContent = msg.question;
+            textDiv.classList.add("hidden");
+            textDiv.style.opacity = 0;
+            createGrid(msg.bitSize);
+            break;
+          }
+          case "bit-start-reveal": {
+            startRevealingBits(msg.bitRemovalDuration);
+            break;
+          }
+          case "bit-reveal-all": {
+            revealAllPieces();
+            break;
+          }
+          case "bit-smooth-reveal": {
+            smoothRevealAll();
+            break;
+          }
+          case "bit-show-answer": {
+            textDiv.textContent = msg.answer;
+            textDiv.classList.remove("hidden");
+            requestAnimationFrame(() => {
+              textDiv.style.transition = "opacity 400ms ease";
+              textDiv.style.opacity = 1;
+            });
+            break;
+          }
+          case "bit-hide-answer": {
+            textDiv.style.transition = "opacity 400ms ease";
+            textDiv.style.opacity = 0;
+            setTimeout(() => textDiv.classList.add("hidden"), 400);
+            break;
+          }
+        }
+      };
+
+      /* ── announce readiness to controller ── */
+      bc.postMessage({ ready: true });
+
+      /* ── sync keyboard input back to controller ── */
+      document.addEventListener("keydown", (e) => {
+        // Forward Enter key presses to controller so it can handle bit reveals
+        if (e.key === "Enter") {
+          e.preventDefault();
+          bc.postMessage({
+            action: "display-enter-pressed",
+            key: "Enter",
+          });
+        }
+      });
+
+      /* ── auto fullscreen ── */
+      window.addEventListener("load", () => {
+        const req = () => {
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          }
+        };
+        req();
+        const once = () => {
+          req();
+          document.removeEventListener("click", once);
+          document.removeEventListener("keydown", once);
+        };
+        document.addEventListener("click", once, { once: true });
+        document.addEventListener("keydown", once, { once: true });
+      });
+    </script>
+  </body>
+</html>

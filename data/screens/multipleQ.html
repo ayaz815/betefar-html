@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multiple Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      @font-face {
+        font-family: "AgencyR";
+        src: url("../fonts/AGENCYR.TTF") format("truetype");
+      }
+
+      @font-face {
+        font-family: "AGENCYB";
+        src: url("../fonts/AGENCYB.TTF") format("truetype");
+      }
+
+      @font-face {
+        font-family: "Arial Black";
+        src: url("../fonts/ariblk.ttf") format("truetype");
+      }
+
+      .font-agency {
+        font-family: "AGENCYB", sans-serif;
+      }
+
+      .font-arial-black {
+        font-family: "Arial Black", sans-serif;
+      }
+
+      .fade {
+        transition: opacity 0.6s ease-in-out;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body id="body" class="h-screen bg-cover bg-center bg-no-repeat">
+    <div
+      class="h-full w-full flex flex-col justify-end items-center relative overflow-hidden"
+    >
+      <button
+        id="mute-btn"
+        class="absolute top-5 left-1/2 -translate-x-1/2 text-white p-20 rounded-lg text-sm hover:bg-black/40 transition"
+      >
+        <!-- Mute -->
+      </button>
+
+      <div
+        id="nav-left"
+        class="absolute top-0 left-0 h-full w-[20%] cursor-pointer hover:bg-black/10 transition-all"
+      ></div>
+
+      <div
+        id="nav-right"
+        class="absolute top-0 right-0 h-full w-[20%] cursor-pointer hover:bg-black/10 transition-all"
+      ></div>
+
+      <div
+        id="question"
+        class="fade bg-black/50 p-5 text-white text-5xl w-fit mb-[5%] cursor-pointer opacity-100 text-center rounded-xl"
+      >
+        Loading...
+      </div>
+
+      <div
+        id="answers"
+        class="fade bg-black/50 px-5 py-2 text-white text-4xl w-fit mb-[5%] cursor-pointer opacity-0 hidden text-center rounded-xl"
+      ></div>
+    </div>
+
+    <script>
+      const body = document.getElementById("body");
+      const questionEl = document.getElementById("question");
+      const answersEl = document.getElementById("answers");
+      const muteBtn = document.getElementById("mute-btn");
+      const navLeft = document.getElementById("nav-left");
+      const navRight = document.getElementById("nav-right");
+
+      let questions = [];
+      let currentIndex = 0;
+      let isMuted = false;
+      let audio = new Audio();
+
+      function fadeOut(el, callback) {
+        el.style.opacity = 0;
+        setTimeout(() => {
+          el.classList.add("hidden");
+          if (callback) callback();
+        }, 600);
+      }
+
+      function fadeIn(el) {
+        el.classList.remove("hidden");
+        setTimeout(() => {
+          el.style.opacity = 1;
+        }, 10);
+      }
+
+      function playAudio(src) {
+        audio.pause();
+        audio = new Audio(src);
+        audio.muted = isMuted;
+        audio.play().catch(() => {});
+      }
+
+      function showQuestion(index) {
+        if (index < 0 || index >= questions.length) return;
+        const q = questions[index];
+
+        body.style.backgroundImage = `url('${q.image}')`;
+        questionEl.innerHTML = `<div class="text-center font-agency">${q.question}</div>`;
+        answersEl.innerHTML = q.choices
+          .map((choice, i) => `<p>${i + 1}. ${choice}</p>`)
+          .join("");
+
+        playAudio(q.audio);
+
+        fadeIn(questionEl);
+        fadeOut(answersEl);
+      }
+
+      fetch("../content/content.json")
+        .then((res) => res.json())
+        .then((data) => {
+          questions = data.multiple;
+          showQuestion(0);
+        })
+        .catch((err) => {
+          questionEl.textContent = "Failed to load content.json";
+          console.error(err);
+        });
+
+      muteBtn.addEventListener("click", () => {
+        isMuted = !isMuted;
+        audio.muted = isMuted;
+        muteBtn.textContent = isMuted ? "" : "";
+      });
+
+      navLeft.addEventListener("click", () => {
+        if (currentIndex > 0) {
+          fadeOut(questionEl);
+          fadeOut(answersEl, () => {
+            currentIndex--;
+            showQuestion(currentIndex);
+          });
+        }
+      });
+
+      navRight.addEventListener("click", () => {
+        if (currentIndex < questions.length - 1) {
+          fadeOut(questionEl);
+          fadeOut(answersEl, () => {
+            currentIndex++;
+            showQuestion(currentIndex);
+          });
+        }
+      });
+
+      questionEl.addEventListener("click", () => {
+        fadeOut(questionEl, () => fadeIn(answersEl));
+      });
+
+      answersEl.addEventListener("click", () => {
+        fadeOut(answersEl, () => fadeIn(questionEl));
+      });
+    </script>
+  </body>
+</html>

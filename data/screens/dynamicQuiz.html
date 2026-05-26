@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      @font-face {
+        font-family: "AgencyR";
+        src: url("../fonts/AGENCYR.TTF") format("truetype");
+      }
+      @font-face {
+        font-family: "AGENCYB";
+        src: url("../fonts/AGENCYB.TTF") format("truetype");
+      }
+      @font-face {
+        font-family: "AgencyFB";
+        src: url("../fonts/AGENCYB.TTF") format("truetype");
+      }
+      @font-face {
+        font-family: "AGENCYR";
+        src: url("../fonts/AGENCYR.TTF") format("truetype");
+      }
+      @font-face {
+        font-family: "Arial Black";
+        src: url("../fonts/ariblk.ttf") format("truetype");
+      }
+
+      .font-agency {
+        font-family: "AGENCYB", sans-serif;
+      }
+      .font-agencyr {
+        font-family: "AGENCYR", "AgencyR", sans-serif;
+      }
+      .fade {
+        transition: opacity 0.6s ease-in-out;
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: black;
+      }
+
+      .bg-contain-center {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color: black;
+      }
+
+      #page-number-badge {
+        position: absolute;
+        bottom: 12px;
+        right: 14px;
+        z-index: 20;
+        background: rgba(0, 0, 0, 0.82);
+        color: #fff;
+        font-family: "AGENCYB", sans-serif;
+        font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+        font-weight: bold;
+        min-width: 2.2em;
+        padding: 3px 8px;
+        border-radius: 5px;
+        text-align: center;
+        letter-spacing: 0.04em;
+        pointer-events: none;
+        user-select: none;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      #imageDiv {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .image-piece {
+        background-color: black;
+      }
+
+      .nav-area {
+        position: absolute;
+        top: 0;
+        width: 20%;
+        height: 45%;
+        z-index: 5;
+        cursor: pointer;
+      }
+      #nav-left {
+        left: 0;
+      }
+      #nav-right {
+        right: 0;
+      }
+
+      #blackScreen {
+        position: absolute;
+        inset: 0;
+        background: black;
+        z-index: 30;
+        color: white;
+        font-family: "AgencyFB";
+        font-size: 2rem;
+        opacity: 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.6s ease-in-out;
+      }
+
+      .background-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+      .content-overlay {
+        position: relative;
+        z-index: 1;
+      }
+
+      #question-container-single {
+        position: absolute;
+        left: 50%;
+        top: 40%;
+        transform: translateX(-50%);
+        width: 62%;
+        background-color: rgba(0, 0, 0, 0.68);
+        padding: 18px 28px;
+        cursor: pointer;
+        transition: opacity 0.6s ease-in-out;
+      }
+      #question-container-single .q-text {
+        font-family: "AGENCYR", "AgencyR", sans-serif;
+        font-size: clamp(1.6rem, 3.4vw, 3rem);
+        line-height: 1.25;
+        color: white;
+        text-align: center;
+        transition: color 0.6s ease-in-out;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      #question-multiple {
+        position: absolute;
+        left: 50%;
+        top: 42%;
+        transform: translateX(-50%);
+        width: 62%;
+        background-color: rgba(0, 0, 0, 0.68);
+        padding: 18px 28px;
+        cursor: pointer;
+        transition: opacity 0.6s ease-in-out;
+        font-family: "AGENCYR", "AgencyR", sans-serif;
+        font-size: clamp(1.6rem, 3.4vw, 3rem);
+        color: white;
+        text-align: center;
+        line-height: 1.25;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      #answers-multiple {
+        position: absolute;
+        left: 45%;
+        top: 30%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        cursor: pointer;
+        transition: opacity 0.6s ease-in-out;
+      }
+
+      .answer-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+      .answer-badge {
+        position: relative;
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "AGENCYB", sans-serif;
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        flex-shrink: 0;
+        overflow: hidden;
+        box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.35),
+          inset 0 2px 0 rgba(255, 255, 255, 0.2), 0 2px 6px rgba(0, 0, 0, 0.4);
+      }
+      .answer-badge::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 52%;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.32) 0%,
+          rgba(255, 255, 255, 0.06) 100%
+        );
+        border-radius: 12px 12px 60% 60%/12px 12px 40% 40%;
+        pointer-events: none;
+      }
+      .badge-a {
+        background: radial-gradient(circle at 38% 32%, #f05545, #7d150d);
+      }
+      .badge-b {
+        background: radial-gradient(circle at 38% 32%, #2ecc71, #145a30);
+      }
+      .badge-c {
+        background: radial-gradient(circle at 38% 32%, #5dade2, #154f7a);
+      }
+      .badge-d {
+        background: radial-gradient(circle at 38% 32%, #b07fd4, #4a1a6b);
+      }
+      .badge-e {
+        background: radial-gradient(circle at 38% 32%, #f5a623, #8a5500);
+      }
+
+      .answer-text {
+        background-color: rgba(35, 43, 58, 0.88);
+        color: white;
+        font-family: "AGENCYR", "AgencyR", sans-serif;
+        font-size: clamp(1.1rem, 2.2vw, 1.7rem);
+        padding: 0 22px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+      }
+
+      .page-list-zone {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 20%;
+        height: 25%;
+        z-index: 15;
+        cursor: pointer;
+      }
+      .show-question-zone {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20%;
+        height: 50%;
+        z-index: 15;
+        cursor: pointer;
+      }
+      .show-answers-zone {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 20%;
+        height: 50%;
+        z-index: 15;
+        cursor: pointer;
+      }
+      .notes-zone {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 30%;
+        height: 30%;
+        z-index: 15;
+        cursor: pointer;
+      }
+      .reveal-center-zone {
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 15%;
+        height: 15%;
+        z-index: 15;
+        cursor: pointer;
+        border-radius: 50%;
+      }
+
+      /* ── OPEN DISPLAY ZONE (invisible, bottom-center) ── */
+      #open-display-zone {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 30px;
+        z-index: 999;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* ── NOTES ── */
+      #notes-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 58;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+      #notes-backdrop.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      #notes-panel {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%) translateY(100%);
+        width: min(560px, 88vw);
+        max-height: 82vh;
+        background: #fff;
+        border-radius: 16px 16px 0 0;
+        z-index: 60;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        pointer-events: none;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55),
+          0 4px 16px rgba(0, 0, 0, 0.3);
+      }
+      #notes-panel.open {
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+      }
+      #notes-image-wrap {
+        margin-bottom: 20px !important;
+        width: 100%;
+        flex-shrink: 0;
+        max-height: 200px;
+        overflow: hidden;
+        background: #e8e8e8;
+        display: none;
+      }
+      #notes-image-wrap.has-image {
+        display: block;
+      }
+      #notes-image-wrap img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        display: block;
+      }
+      #notes-body {
+        padding: 20px 22px 24px;
+        overflow-y: auto;
+        flex: 1;
+        scrollbar-width: thin;
+        scrollbar-color: #ccc transparent;
+      }
+      #notes-content {
+        all: unset;
+        display: block;
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 1rem;
+        font-weight: 400 !important;
+        color: #333;
+        line-height: 1.6;
+        margin-top: 10px;
+      }
+      #notes-content *,
+      #notes-content *:not(img):not(a) {
+        font-family: "Inter", Arial, sans-serif !important;
+        font-weight: 400 !important;
+        font-style: normal;
+      }
+      #notes-content em,
+      #notes-content i {
+        font-style: italic !important;
+        font-weight: 400 !important;
+      }
+      #notes-content h1 {
+        font-size: 1.35rem !important;
+        font-weight: 400 !important;
+        line-height: 1.4 !important;
+        margin: 0 0 6px 0 !important;
+        color: #111 !important;
+        font-family: "Inter", Arial, sans-serif !important;
+      }
+      #notes-content h2 {
+        font-size: 1.25rem !important;
+        font-weight: 400 !important;
+        line-height: 1.4 !important;
+        margin: 0 0 6px 0 !important;
+        color: #111 !important;
+        font-family: "Inter", Arial, sans-serif !important;
+      }
+      #notes-content h3 {
+        font-size: 1.18rem !important;
+        font-weight: 400 !important;
+        line-height: 1.4 !important;
+        margin: 0 0 4px 0 !important;
+        color: #111 !important;
+        font-family: "Inter", Arial, sans-serif !important;
+      }
+      #notes-content h4 {
+        font-size: 1.12rem !important;
+        font-weight: 400 !important;
+        line-height: 1.4 !important;
+        margin: 0 0 4px 0 !important;
+        font-family: "Inter", Arial, sans-serif !important;
+      }
+      #notes-content h5 {
+        font-size: 1.06rem !important;
+        font-weight: 400 !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+        font-family: "Inter", Arial, sans-serif !important;
+      }
+      #notes-content h6 {
+        font-size: 1.02rem !important;
+        font-weight: 400 !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+        font-family: "Inter", Arial, sans-serif !important;
+      }
+      #notes-content p {
+        font-size: 1rem !important;
+        font-weight: 400 !important;
+        line-height: 1.7 !important;
+        color: #333 !important;
+        font-family: "Inter", Arial, sans-serif !important;
+        margin: 0 !important;
+      }
+      #notes-content strong,
+      #notes-content b {
+        font-weight: 400 !important;
+        font-family: "Inter", Arial, sans-serif !important;
+      }
+      #notes-content ul,
+      #notes-content ol {
+        padding-left: 20px !important;
+        margin: 0 !important;
+      }
+      #notes-content li {
+        font-size: 1rem !important;
+        font-weight: 400 !important;
+        line-height: 1.7 !important;
+        color: #333 !important;
+        font-family: "Inter", Arial, sans-serif !important;
+      }
+      #notes-content img {
+        width: 100% !important;
+        border-radius: 6px !important;
+        margin: 10px 0 !important;
+        display: block !important;
+      }
+      #notes-content a {
+        color: #1a73e8 !important;
+        text-decoration: underline !important;
+        font-size: 1rem !important;
+        word-break: break-all !important;
+        font-family: "Inter", Arial, sans-serif !important;
+        font-weight: 400 !important;
+      }
+      #notes-link {
+        display: none;
+        margin-top: 14px;
+        color: #1a73e8;
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 1rem;
+        text-decoration: none;
+        word-break: break-all;
+        font-weight: 400 !important;
+      }
+      #notes-link.has-link {
+        display: inline;
+      }
+      #notes-link:hover {
+        text-decoration: underline;
+      }
+
+      /* ── DRAWER ── */
+      #drawer-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 49;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+      }
+      #drawer-backdrop.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      #page-list-drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: clamp(140px, 16vw, 200px);
+        height: 100%;
+        background: rgba(10, 10, 10, 0.96);
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      #page-list-drawer.open {
+        transform: translateX(0);
+      }
+      #drawer-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px 10px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+      }
+      .drawer-item {
+        position: relative;
+        border-radius: 6px;
+        overflow: hidden;
+        cursor: pointer;
+        flex-shrink: 0;
+        border: 2px solid transparent;
+        transition: border-color 0.2s;
+        background: #111;
+      }
+      .drawer-item:hover {
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+      .drawer-item.active {
+        border-color: #f0c040;
+      }
+      .drawer-item.cursor {
+        outline: 2px solid rgba(255, 255, 255, 0.85);
+        outline-offset: -2px;
+      }
+      .drawer-item.active.cursor {
+        border-color: #f0c040;
+        outline: 2px solid rgba(255, 255, 255, 0.85);
+        outline-offset: -2px;
+      }
+      .drawer-item img,
+      .drawer-item video {
+        width: 100%;
+        height: 90px;
+        object-fit: cover;
+        display: block;
+      }
+      .drawer-item-label {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.82));
+        color: white;
+        font-family: "AGENCYR", sans-serif;
+        font-size: 0.68rem;
+        padding: 16px 6px 5px;
+        line-height: 1.3;
+      }
+
+      #textDiv {
+        position: absolute;
+        top: 42%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 62%;
+        font-family: "AGENCYR", "AgencyR", sans-serif;
+        font-weight: normal;
+        font-size: clamp(1.6rem, 3.4vw, 3rem);
+        line-height: 1.25;
+        color: white;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.68);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      #bit-click-zone {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 62%;
+        min-height: 80px;
+        z-index: 12;
+        cursor: pointer;
+      }
+      #bit-background {
+        overflow: hidden;
+      }
+
+      @media (max-width: 1024px) {
+        #page-number-badge {
+          bottom: auto;
+          right: auto;
+          top: 2%;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 0.85rem;
+          padding: 2px 7px;
+        }
+        #question-container-single {
+          left: 0;
+          right: 0;
+          top: 42%;
+          transform: translateY(-50%);
+          width: 80%;
+          margin: 0 auto;
+          max-width: calc(100% - 40px);
+          padding: 12px 16px;
+          box-sizing: border-box;
+        }
+        #question-container-single .q-text {
+          font-size: clamp(1rem, 4.8vw, 1.5rem);
+          line-height: 1.35;
+          display: block;
+          -webkit-line-clamp: unset;
+          overflow: visible;
+        }
+        #question-multiple {
+          left: 0;
+          right: 0;
+          top: 40%;
+          transform: translateY(-50%);
+          width: 80%;
+          margin: 0 auto;
+          max-width: calc(100% - 40px);
+          font-size: clamp(1rem, 4.8vw, 1.5rem);
+          padding: 12px 16px;
+          line-height: 1.35;
+          display: block;
+          -webkit-line-clamp: unset;
+          overflow: visible;
+          max-height: 50vh;
+          box-sizing: border-box;
+        }
+        #answers-multiple {
+          left: 50%;
+          top: 42%;
+          transform: translate(-50%, -47%);
+          width: auto;
+          gap: 6px;
+          max-height: 55vh;
+          overflow-y: auto;
+          align-items: flex-start;
+        }
+        .answer-badge {
+          width: 44px;
+          height: 44px;
+          min-height: 44px;
+          font-size: 0.98rem;
+          align-self: stretch;
+        }
+        .answer-text {
+          white-space: normal;
+          word-break: break-word;
+          height: auto;
+          min-height: 44px;
+          padding: 8px 14px;
+          font-size: clamp(0.88rem, 3.8vw, 1.15rem);
+          line-height: 1.3;
+          flex: 0 1 auto;
+          max-width: 60vw;
+        }
+        #page-list-drawer {
+          width: 100vw;
+          height: 100vh;
+          top: 0;
+          right: 0;
+          border-left: none;
+          transform: translateY(100%);
+          overflow-y: auto;
+        }
+        #page-list-drawer.open {
+          transform: translateY(0);
+        }
+        #drawer-list {
+          display: grid;
+          grid-template-columns: repeat(1, 1fr);
+          gap: 2px;
+          padding: 2px;
+          flex: unset;
+          overflow-y: unset;
+          margin: 12px 0 5px 0;
+        }
+        .drawer-item {
+          width: 80%;
+          margin: 0 auto;
+          border-radius: 4px;
+        }
+        .drawer-item img,
+        .drawer-item video {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 1/1;
+          object-fit: cover;
+          display: block;
+        }
+        #textDiv {
+          font-size: clamp(1rem, 4.8vw, 1.5rem);
+          width: 86%;
+        }
+        .reveal-center-zone {
+          width: 22%;
+          height: 22%;
+        }
+      }
+    </style>
+  </head>
+
+  <body id="body">
+    <!-- Invisible open-display zone — bottom center, no visible UI -->
+    <div id="open-display-zone"></div>
+
+    <div id="drawer-backdrop"></div>
+    <div id="page-list-drawer"><div id="drawer-list"></div></div>
+
+    <div id="notes-backdrop"></div>
+    <div id="notes-panel">
+      <div id="notes-image-wrap"><img id="notes-image" src="" alt="" /></div>
+      <div id="notes-body">
+        <div id="notes-content"></div>
+        <a id="notes-link" href="#" target="_blank" rel="noopener"></a>
+      </div>
+    </div>
+
+    <!-- SINGLE -->
+    <div
+      id="single-container"
+      class="hidden h-screen bg-contain-center relative"
+    >
+      <video
+        id="single-video"
+        class="background-video hidden"
+        autoplay
+        loop
+        muted
+        playsinline
+      ></video>
+      <div class="content-overlay relative h-full w-full overflow-hidden">
+        <button
+          id="mute-btn-single"
+          class="absolute top-5 left-1/2 -translate-x-1/2 text-white p-20 rounded-lg text-sm transition z-20"
+        ></button>
+        <div
+          id="nav-left-single"
+          class="absolute top-0 left-0 h-full w-[20%] cursor-pointer z-10"
+        ></div>
+        <div
+          id="nav-right-single"
+          class="absolute top-0 right-0 h-full w-[20%] cursor-pointer z-10"
+        ></div>
+        <div class="page-list-zone" id="page-list-zone-single"></div>
+        <div class="show-question-zone" id="show-question-zone-single"></div>
+        <div class="notes-zone" id="notes-zone-single"></div>
+        <div id="question-container-single" class="fade z-10">
+          <div class="q-text">Loading...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MULTIPLE -->
+    <div
+      id="multiple-container"
+      class="hidden h-screen bg-contain-center relative"
+    >
+      <video
+        id="multiple-video"
+        class="background-video hidden"
+        autoplay
+        loop
+        muted
+        playsinline
+      ></video>
+      <div class="content-overlay h-full w-full relative overflow-hidden">
+        <button
+          id="mute-btn-multiple"
+          class="absolute top-5 left-1/2 -translate-x-1/2 text-white p-20 rounded-lg text-sm transition z-20"
+        ></button>
+        <div
+          id="nav-left-multiple"
+          class="absolute top-0 left-0 h-full w-[20%] cursor-pointer z-10"
+        ></div>
+        <div
+          id="nav-right-multiple"
+          class="absolute top-0 right-0 h-full w-[20%] cursor-pointer z-10"
+        ></div>
+        <div class="page-list-zone" id="page-list-zone-multiple"></div>
+        <div class="show-question-zone" id="show-question-zone-multiple"></div>
+        <div class="show-answers-zone" id="show-answers-zone-multiple"></div>
+        <div class="notes-zone" id="notes-zone-multiple"></div>
+        <div id="question-multiple" class="fade z-10">Loading...</div>
+        <div id="answers-multiple" class="fade hidden z-10"></div>
+      </div>
+    </div>
+
+    <!-- BIT-BY-BIT -->
+    <div id="bit-container" class="hidden">
+      <div
+        class="flex justify-center items-center h-screen bg-contain-center relative"
+        id="bit-background"
+      >
+        <video
+          id="bit-video"
+          class="background-video hidden"
+          autoplay
+          loop
+          muted
+          playsinline
+        ></video>
+        <div
+          class="content-overlay relative w-full h-full flex flex-col justify-end items-center"
+        >
+          <button
+            id="muteBtn-bit"
+            class="absolute top-0 left-1/2 size-[30%] -translate-x-1/2 text-white p-3 rounded-lg text-sm transition z-20"
+          ></button>
+          <button
+            id="toggleImageBtn-bit"
+            class="p-5 text-white text-4xl mb-auto mt-auto cursor-pointer opacity-100 transition-opacity duration-300 z-10 text-center font-[AgencyFB]"
+          ></button>
+          <div id="nav-left" class="nav-area"></div>
+          <div id="nav-right" class="nav-area"></div>
+          <div class="page-list-zone" id="page-list-zone-bit"></div>
+          <div class="show-question-zone" id="show-question-zone-bit"></div>
+          <div class="notes-zone" id="notes-zone-bit"></div>
+          <div class="reveal-center-zone" id="reveal-center-zone-bit"></div>
+          <div id="imageDiv" class="w-full h-full absolute top-0 left-0"></div>
+          <div
+            id="textDiv"
+            class="bg-black/70 p-5 text-white text-4xl mt-auto mb-auto cursor-pointer opacity-100 transition-opacity duration-300 z-10 text-center"
+          >
+            Loading...
+          </div>
+          <div id="bit-click-zone"></div>
+          <div id="blackScreen"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-number-badge"></div>
+
+    <script>
+      const HOME_URL = "../../index.html";
+
+      let questions = [],
+        currentIndex = 0,
+        audio = new Audio(),
+        isMuted = false;
+      const BADGE_COLORS = [
+        "badge-a",
+        "badge-b",
+        "badge-c",
+        "badge-d",
+        "badge-e",
+      ];
+      const LETTERS = ["A", "B", "C", "D", "E"];
+
+      const bc = new BroadcastChannel("quiz-display");
+      let displayWindow = null;
+      let multipleShowingAnswers = false,
+        singleState = 0,
+        multipleState = 0;
+
+      /* ── AUTO FULLSCREEN ON LOAD ── */
+      window.addEventListener("load", () => {
+        const requestFs = () => {
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          }
+        };
+        requestFs();
+        const onFirstInteraction = () => {
+          requestFs();
+          document.removeEventListener("click", onFirstInteraction);
+          document.removeEventListener("keydown", onFirstInteraction);
+        };
+        document.addEventListener("click", onFirstInteraction, { once: true });
+        document.addEventListener("keydown", onFirstInteraction, {
+          once: true,
+        });
+      });
+
+      /* ── OPEN DISPLAY WINDOW (invisible zone, bottom-center) ── */
+      document
+        .getElementById("open-display-zone")
+        .addEventListener("click", () => {
+          if (displayWindow && !displayWindow.closed) {
+            displayWindow.focus();
+            return;
+          }
+          displayWindow = window.open(
+            "display.html",
+            "QuizDisplay",
+            "width=1280,height=720,menubar=no,toolbar=no,location=no,status=no,scrollbars=no,resizable=yes"
+          );
+          if (!displayWindow) {
+            alert("Popup blocked. Please allow popups for this page.");
+            return;
+          }
+          // Poll for close
+          const poll = setInterval(() => {
+            if (displayWindow.closed) {
+              clearInterval(poll);
+              displayWindow = null;
+            }
+          }, 1000);
+        });
+
+      /* ── RECEIVE "ready" from display window, then sync current state ── */
+      bc.onmessage = (e) => {
+        if (e.data && e.data.ready) {
+          if (questions.length > 0) broadcastCurrentQuestion();
+        }
+      };
+
+      function broadcast(cmd) {
+        bc.postMessage(cmd);
+      }
+      function broadcastCurrentQuestion() {
+        const q = questions[currentIndex];
+        if (!q) return;
+        if (q.type === "single") {
+          broadcast({
+            action: "show-single",
+            index: currentIndex,
+            question: q.question,
+            image: q.image,
+            bgColor: q.bgColor,
+            audio: q.audio,
+            questionVisible: singleState === 1,
+          });
+        } else if (q.type === "multiple") {
+          broadcast({
+            action: "show-multiple",
+            index: currentIndex,
+            question: q.question,
+            image: q.image,
+            bgColor: q.bgColor,
+            options: q.options || q.choices || [],
+            showAnswers: multipleShowingAnswers,
+          });
+        } else if (q.type === "bit") {
+          broadcast({
+            action: "show-bit",
+            index: currentIndex,
+            question: q.question,
+            image: q.image,
+            bgColor: q.bgColor,
+            bitSize: q.bitSize,
+            bitRemovalDuration: q.bitRemovalDuration,
+          });
+        }
+      }
+
+      const pageBadge = document.getElementById("page-number-badge");
+      function updatePageBadge(index) {
+        pageBadge.textContent = index + 1;
+      }
+      function attachBadgeTo(containerEl) {
+        const overlay =
+          containerEl.querySelector(".content-overlay") || containerEl;
+        overlay.appendChild(pageBadge);
+      }
+      function goHome() {
+        window.location.href = HOME_URL;
+      }
+      function isVideoUrl(url) {
+        if (!url) return false;
+        return [".mp4", ".webm", ".ogg", ".mov"].some((e) =>
+          url.toLowerCase().includes(e)
+        );
+      }
+
+      function setBackgroundMedia(container, videoEl, mediaUrl, bgColor) {
+        const bg = bgColor && bgColor.trim() ? bgColor.trim() : "#000000";
+        if (isVideoUrl(mediaUrl)) {
+          container.style.backgroundImage = "none";
+          container.style.backgroundColor = bg;
+          videoEl.src = mediaUrl;
+          videoEl.classList.remove("hidden");
+          videoEl.play().catch(() => {});
+        } else {
+          videoEl.classList.add("hidden");
+          videoEl.pause();
+          videoEl.src = "";
+          container.style.backgroundImage = mediaUrl
+            ? `url('${mediaUrl}')`
+            : "none";
+          container.style.backgroundSize = "contain";
+          container.style.backgroundRepeat = "no-repeat";
+          container.style.backgroundPosition = "center 38%";
+          container.style.backgroundColor = bg;
+        }
+      }
+
+      function fadeOut(el, cb) {
+        el.style.opacity = 0;
+        setTimeout(() => {
+          if (cb) cb();
+        }, 600);
+      }
+      function fadeOutEl(el, cb) {
+        el.style.opacity = 0;
+        setTimeout(() => {
+          el.classList.add("hidden");
+          if (cb) cb();
+        }, 600);
+      }
+      function fadeInEl(el) {
+        el.classList.remove("hidden");
+        setTimeout(() => {
+          el.style.opacity = 1;
+        }, 10);
+      }
+      function playAudio(src) {
+        if (!src) return;
+        audio.pause();
+        audio = new Audio(src);
+        audio.muted = isMuted;
+        audio.play().catch(() => {});
+      }
+
+      const singleContainer = document.getElementById("single-container");
+      const singleVideo = document.getElementById("single-video");
+      const multipleContainer = document.getElementById("multiple-container");
+      const multipleVideo = document.getElementById("multiple-video");
+      const bitContainer = document.getElementById("bit-container");
+      const bitBackground = document.getElementById("bit-background");
+      const bitVideo = document.getElementById("bit-video");
+
+      /* ── NOTES ── */
+      const notesPanel = document.getElementById("notes-panel"),
+        notesBackdrop = document.getElementById("notes-backdrop");
+      const notesContent = document.getElementById("notes-content"),
+        notesImageWrap = document.getElementById("notes-image-wrap");
+      const notesImage = document.getElementById("notes-image"),
+        notesLink = document.getElementById("notes-link");
+      let notesOpen = false;
+      function openNotes() {
+        const q = questions[currentIndex];
+        if (q && q.notesImage) {
+          notesImage.src = q.notesImage;
+          notesImageWrap.classList.add("has-image");
+        } else {
+          notesImage.src = "";
+          notesImageWrap.classList.remove("has-image");
+        }
+        notesContent.innerHTML =
+          q && q.notes ? q.notes : "<p>No notes for this question.</p>";
+        if (q && q.notesLink) {
+          notesLink.href = q.notesLink;
+          notesLink.textContent = q.notesLinkLabel || q.notesLink;
+          notesLink.classList.add("has-link");
+        } else {
+          notesLink.href = "#";
+          notesLink.textContent = "";
+          notesLink.classList.remove("has-link");
+        }
+        notesPanel.classList.add("open");
+        notesBackdrop.classList.add("open");
+        notesOpen = true;
+      }
+      function closeNotes() {
+        notesPanel.classList.remove("open");
+        notesBackdrop.classList.remove("open");
+        notesOpen = false;
+      }
+      notesBackdrop.addEventListener("click", closeNotes);
+      ["notes-zone-single", "notes-zone-multiple", "notes-zone-bit"].forEach(
+        (id) => {
+          const el = document.getElementById(id);
+          if (el)
+            el.addEventListener("click", (e) => {
+              e.stopPropagation();
+              notesOpen ? closeNotes() : openNotes();
+            });
+        }
+      );
+
+      /* ── SINGLE ── */
+      const containerSingle = document.getElementById(
+        "question-container-single"
+      );
+      function showSingleQuestion(q) {
+        singleContainer.classList.remove("hidden");
+        multipleContainer.classList.add("hidden");
+        bitContainer.classList.add("hidden");
+        attachBadgeTo(singleContainer);
+        setBackgroundMedia(singleContainer, singleVideo, q.image, q.bgColor);
+        const textEl = containerSingle.querySelector(".q-text");
+        textEl.textContent = q.question;
+        singleState = 0;
+        textEl.style.color = "transparent";
+        containerSingle.style.backgroundColor = "transparent";
+        containerSingle.style.opacity = 1;
+        playAudio(q.audio);
+        broadcast({
+          action: "show-single",
+          index: currentIndex,
+          question: q.question,
+          image: q.image,
+          bgColor: q.bgColor,
+          questionVisible: false,
+        });
+      }
+      document
+        .getElementById("mute-btn-single")
+        .addEventListener("click", () => {
+          isMuted = !isMuted;
+          audio.muted = isMuted;
+        });
+      document
+        .getElementById("nav-left-single")
+        .addEventListener("click", () => {
+          if (currentIndex > 0)
+            fadeOut(containerSingle, () => {
+              currentIndex--;
+              showQuestion(currentIndex);
+            });
+          else goHome();
+        });
+      document
+        .getElementById("nav-right-single")
+        .addEventListener("click", () => {
+          if (currentIndex < questions.length - 1)
+            fadeOut(containerSingle, () => {
+              currentIndex++;
+              showQuestion(currentIndex);
+            });
+        });
+      containerSingle.addEventListener("click", () => {
+        const textEl = containerSingle.querySelector(".q-text");
+        singleState = singleState === 0 ? 1 : 0;
+        if (singleState === 1) {
+          textEl.style.color = "white";
+          containerSingle.style.backgroundColor = "rgba(0,0,0,0.68)";
+        } else {
+          textEl.style.color = "transparent";
+          containerSingle.style.backgroundColor = "transparent";
+        }
+        broadcast({
+          action: "toggle-single-question",
+          visible: singleState === 1,
+        });
+      });
+      document
+        .getElementById("show-question-zone-single")
+        .addEventListener("click", (e) => {
+          e.stopPropagation();
+          containerSingle.click();
+        });
+
+      /* ── MULTIPLE ── */
+      const questionElMultiple = document.getElementById("question-multiple"),
+        answersElMultiple = document.getElementById("answers-multiple");
+      function buildAnswerRows(choices) {
+        answersElMultiple.innerHTML = "";
+        choices.forEach((choice, i) => {
+          const row = document.createElement("div");
+          row.className = "answer-row";
+          const badge = document.createElement("div");
+          badge.className = `answer-badge ${BADGE_COLORS[i] || "badge-a"}`;
+          badge.textContent = LETTERS[i] || String.fromCharCode(65 + i);
+          const text = document.createElement("div");
+          text.className = "answer-text";
+          text.textContent = choice;
+          row.appendChild(badge);
+          row.appendChild(text);
+          answersElMultiple.appendChild(row);
+        });
+      }
+      function showMultipleQuestion(q) {
+        singleContainer.classList.add("hidden");
+        multipleContainer.classList.remove("hidden");
+        bitContainer.classList.add("hidden");
+        attachBadgeTo(multipleContainer);
+        setBackgroundMedia(
+          multipleContainer,
+          multipleVideo,
+          q.image,
+          q.bgColor
+        );
+        questionElMultiple.textContent = q.question;
+        buildAnswerRows(q.options || q.choices || []);
+        playAudio(q.audio);
+        multipleState = 0;
+        multipleShowingAnswers = false;
+        questionElMultiple.classList.add("hidden");
+        questionElMultiple.style.opacity = 0;
+        answersElMultiple.classList.add("hidden");
+        answersElMultiple.style.opacity = 0;
+        broadcast({
+          action: "show-multiple",
+          index: currentIndex,
+          question: q.question,
+          image: q.image,
+          bgColor: q.bgColor,
+          options: q.options || q.choices || [],
+          showAnswers: false,
+        });
+      }
+      function advanceMultipleState() {
+        multipleState = (multipleState + 1) % 3;
+        multipleShowingAnswers = multipleState === 2;
+        if (multipleState === 0) {
+          fadeOutEl(questionElMultiple);
+          fadeOutEl(answersElMultiple);
+          broadcast({ action: "toggle-multiple", showAnswers: false });
+        } else if (multipleState === 1) {
+          answersElMultiple.classList.add("hidden");
+          answersElMultiple.style.opacity = 0;
+          fadeInEl(questionElMultiple);
+          broadcast({ action: "toggle-multiple", showAnswers: false });
+        } else {
+          fadeOutEl(questionElMultiple, () => fadeInEl(answersElMultiple));
+          broadcast({ action: "toggle-multiple", showAnswers: true });
+        }
+      }
+      document
+        .getElementById("mute-btn-multiple")
+        .addEventListener("click", () => {
+          isMuted = !isMuted;
+          audio.muted = isMuted;
+        });
+      document
+        .getElementById("nav-left-multiple")
+        .addEventListener("click", () => {
+          if (currentIndex > 0) {
+            fadeOutEl(questionElMultiple);
+            fadeOutEl(answersElMultiple, () => {
+              currentIndex--;
+              showQuestion(currentIndex);
+            });
+          } else goHome();
+        });
+      document
+        .getElementById("nav-right-multiple")
+        .addEventListener("click", () => {
+          if (currentIndex < questions.length - 1) {
+            fadeOutEl(questionElMultiple);
+            fadeOutEl(answersElMultiple, () => {
+              currentIndex++;
+              showQuestion(currentIndex);
+            });
+          }
+        });
+      questionElMultiple.addEventListener("click", advanceMultipleState);
+      answersElMultiple.addEventListener("click", advanceMultipleState);
+      document
+        .getElementById("show-question-zone-multiple")
+        .addEventListener("click", (e) => {
+          e.stopPropagation();
+          advanceMultipleState();
+        });
+      document
+        .getElementById("show-answers-zone-multiple")
+        .addEventListener("click", (e) => {
+          e.stopPropagation();
+          advanceMultipleState();
+        });
+
+      /* ── BIT-BY-BIT ── */
+      const textDiv = document.getElementById("textDiv"),
+        imageDiv = document.getElementById("imageDiv"),
+        blackScreen = document.getElementById("blackScreen");
+      let pieces = [],
+        revealTimeouts = [],
+        bitRevealStarted = false,
+        bitRevealComplete = false,
+        bitAnswerShown = false,
+        bitAnswerVisible = false,
+        pieceSize = 4;
+      let currentBitDurationMs = 3000;
+      function getGridCount() {
+        const n = parseInt(pieceSize);
+        if (n === 1) return 8;
+        if (n === 2) return 12;
+        return 8;
+      }
+      function getDurationMs(raw) {
+        const n = parseInt(raw);
+        if (n === 112) return 70000;
+        if (n === 192) return 90000;
+        if (!isNaN(n) && n > 0 && n <= 60) return n * 1000;
+        return 3000;
+      }
+      function createGrid() {
+        pieces = [];
+        imageDiv.innerHTML = "";
+        const cols = getGridCount(),
+          rows = cols;
+        imageDiv.style.cssText =
+          "position:absolute;top:0;left:0;width:100%;height:100%;display:grid;overflow:hidden;";
+        const cellSize = Math.ceil(
+          Math.max(window.innerWidth, window.innerHeight) / cols
+        );
+        imageDiv.style.gridTemplateColumns = `repeat(${cols},${cellSize}px)`;
+        imageDiv.style.gridTemplateRows = `repeat(${rows},${cellSize}px)`;
+        for (let i = 0; i < cols * rows; i++) {
+          const p = document.createElement("div");
+          p.classList.add("image-piece");
+          p.style.cssText =
+            "width:100%;height:100%;background-color:black;opacity:1;transition:none;";
+          imageDiv.appendChild(p);
+          pieces.push(p);
+        }
+      }
+      function shuffleArray(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+      function clearRevealTimeouts() {
+        revealTimeouts.forEach((id) => clearTimeout(id));
+        revealTimeouts = [];
+      }
+      function startRevealingBits() {
+        clearRevealTimeouts();
+        const total = pieces.length,
+          shuffled = shuffleArray(pieces),
+          dur = currentBitDurationMs,
+          fadeDur = Math.min(300, (dur / total) * 2);
+        shuffled.forEach((piece, idx) => {
+          const delay = Math.round(((idx + 1) / total) * dur);
+          const id = setTimeout(() => {
+            piece.style.transition = `opacity ${fadeDur}ms ease`;
+            piece.style.opacity = "0";
+            if (idx === total - 1) bitRevealComplete = true;
+          }, delay);
+          revealTimeouts.push(id);
+        });
+        bitRevealStarted = true;
+        broadcast({
+          action: "bit-start-reveal",
+          bitRemovalDuration: questions[currentIndex]?.bitRemovalDuration,
+        });
+      }
+      function revealAllPieces() {
+        clearRevealTimeouts();
+        pieces.forEach((p, i) => {
+          const id = setTimeout(() => {
+            p.style.transition = "opacity 300ms ease";
+            p.style.opacity = "0";
+            if (i === pieces.length - 1)
+              setTimeout(() => {
+                bitRevealComplete = true;
+              }, 300);
+          }, i * 15);
+          revealTimeouts.push(id);
+        });
+        broadcast({ action: "bit-reveal-all" });
+      }
+      function smoothRevealAll() {
+        clearRevealTimeouts();
+        const shuffled = shuffleArray(pieces),
+          total = shuffled.length,
+          totalDur = 1800;
+        shuffled.forEach((piece, idx) => {
+          const delay = Math.round((idx / total) * totalDur);
+          const id = setTimeout(() => {
+            piece.style.transition = "opacity 600ms cubic-bezier(0.4,0,0.2,1)";
+            piece.style.opacity = "0";
+            if (idx === total - 1)
+              setTimeout(() => {
+                bitRevealComplete = true;
+              }, 600);
+          }, delay);
+          revealTimeouts.push(id);
+        });
+        textDiv.style.opacity = 0;
+        setTimeout(() => textDiv.classList.add("hidden"), 200);
+        bitRevealStarted = true;
+        broadcast({ action: "bit-smooth-reveal" });
+      }
+      document
+        .getElementById("reveal-center-zone-bit")
+        .addEventListener("click", (e) => {
+          e.stopPropagation();
+          smoothRevealAll();
+        });
+      function showBitQuestion(q) {
+        singleContainer.classList.add("hidden");
+        multipleContainer.classList.add("hidden");
+        bitContainer.classList.remove("hidden");
+        attachBadgeTo(bitContainer);
+        setBackgroundMedia(bitBackground, bitVideo, q.image, q.bgColor);
+        pieceSize = q.bitSize;
+        currentBitDurationMs = getDurationMs(q.bitRemovalDuration);
+        textDiv.textContent = q.question;
+        textDiv.classList.add("hidden");
+        textDiv.style.opacity = 0;
+        createGrid();
+        playAudio(q.audio);
+        bitRevealStarted = false;
+        bitRevealComplete = false;
+        bitAnswerShown = false;
+        bitAnswerVisible = false;
+        broadcast({
+          action: "show-bit",
+          index: currentIndex,
+          question: q.question,
+          image: q.image,
+          bgColor: q.bgColor,
+          bitSize: q.bitSize,
+          bitRemovalDuration: q.bitRemovalDuration,
+        });
+      }
+      function accelerateBits() {
+        clearRevealTimeouts();
+        const remaining = shuffleArray(
+          pieces.filter((p) => parseFloat(p.style.opacity || "1") > 0)
+        );
+        const total = remaining.length;
+        if (total === 0) {
+          bitRevealComplete = true;
+          return;
+        }
+        const spreadMs = Math.min(total * 30, 800);
+        remaining.forEach((p, idx) => {
+          const delay = Math.round((idx / total) * spreadMs);
+          const id = setTimeout(() => {
+            p.style.transition = "opacity 120ms ease";
+            p.style.opacity = "0";
+            if (idx === total - 1)
+              setTimeout(() => {
+                bitRevealComplete = true;
+              }, 120);
+          }, delay);
+          revealTimeouts.push(id);
+        });
+      }
+      function toggleBitAnswer() {
+        const q = questions[currentIndex];
+        const answer = q.answer || q.correct || q.correctAnswer || "";
+        if (!answer) return;
+        if (!bitAnswerVisible) {
+          textDiv.textContent = answer;
+          textDiv.classList.remove("hidden");
+          requestAnimationFrame(() => {
+            textDiv.style.transition = "opacity 400ms ease";
+            textDiv.style.opacity = 1;
+          });
+          bitAnswerVisible = true;
+          broadcast({ action: "bit-show-answer", answer });
+        } else {
+          textDiv.style.transition = "opacity 400ms ease";
+          textDiv.style.opacity = 0;
+          setTimeout(() => textDiv.classList.add("hidden"), 400);
+          bitAnswerVisible = false;
+          broadcast({ action: "bit-hide-answer" });
+        }
+      }
+      const bitClickZone = document.getElementById("bit-click-zone");
+      bitClickZone.addEventListener("click", () => {
+        if (
+          !bitRevealStarted &&
+          textDiv.classList.contains("hidden") &&
+          !bitAnswerShown
+        ) {
+          textDiv.classList.remove("hidden");
+          setTimeout(() => {
+            textDiv.style.opacity = 1;
+          }, 10);
+        } else if (
+          !bitRevealStarted &&
+          !textDiv.classList.contains("hidden") &&
+          !bitAnswerShown
+        ) {
+          textDiv.style.opacity = 0;
+          setTimeout(() => textDiv.classList.add("hidden"), 200);
+          startRevealingBits();
+        } else if (bitRevealStarted && !bitRevealComplete && !bitAnswerShown) {
+          accelerateBits();
+        } else if (bitRevealComplete && !bitAnswerShown) {
+          bitAnswerShown = true;
+          toggleBitAnswer();
+        } else if (bitAnswerShown) {
+          toggleBitAnswer();
+        }
+      });
+      document
+        .getElementById("toggleImageBtn-bit")
+        .addEventListener("click", () => {
+          if (textDiv.style.opacity !== "0") {
+            textDiv.style.opacity = 0;
+            setTimeout(() => textDiv.classList.add("hidden"), 200);
+          }
+          revealAllPieces();
+        });
+      document.getElementById("nav-left").onclick = () => {
+        clearRevealTimeouts();
+        if (currentIndex > 0) {
+          currentIndex--;
+          showQuestion(currentIndex);
+        } else goHome();
+      };
+      document.getElementById("nav-right").onclick = () => {
+        clearRevealTimeouts();
+        if (currentIndex < questions.length - 1) {
+          currentIndex++;
+          showQuestion(currentIndex);
+        }
+      };
+      document.getElementById("muteBtn-bit").onclick = () => {
+        isMuted = !isMuted;
+        audio.muted = isMuted;
+        document.getElementById("muteBtn-bit").textContent = isMuted
+          ? "🔇"
+          : "";
+      };
+      window.addEventListener("resize", () => {
+        if (!bitContainer.classList.contains("hidden") && pieces.length > 0) {
+          const wasStarted = bitRevealStarted;
+          clearRevealTimeouts();
+          createGrid();
+          if (wasStarted) startRevealingBits();
+        }
+      });
+
+      /* ── ROUTER ── */
+      function showQuestion(index) {
+        if (index < 0 || index >= questions.length) return;
+        closeNotes();
+        highlightDrawerItem(index);
+        updatePageBadge(index);
+        const q = questions[index];
+        if (q.type === "single") showSingleQuestion(q);
+        else if (q.type === "multiple") showMultipleQuestion(q);
+        else if (q.type === "bit") showBitQuestion(q);
+      }
+
+      /* ── DRAWER ── */
+      const drawerPanel = document.getElementById("page-list-drawer"),
+        drawerBackdrop = document.getElementById("drawer-backdrop"),
+        drawerList = document.getElementById("drawer-list");
+      let drawerOpen = false;
+      function openDrawer() {
+        drawerOpen = true;
+        drawerPanel.classList.add("open");
+        drawerBackdrop.classList.add("open");
+      }
+      function closeDrawer() {
+        drawerOpen = false;
+        drawerPanel.classList.remove("open");
+        drawerBackdrop.classList.remove("open");
+        drawerList
+          .querySelectorAll(".drawer-item")
+          .forEach((el) => el.classList.remove("cursor"));
+      }
+      [
+        "page-list-zone-single",
+        "page-list-zone-multiple",
+        "page-list-zone-bit",
+      ].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el)
+          el.addEventListener("click", (e) => {
+            e.stopPropagation();
+            drawerOpen ? closeDrawer() : openDrawer();
+          });
+      });
+      drawerBackdrop.addEventListener("click", closeDrawer);
+      function buildDrawerList() {
+        drawerList.innerHTML = "";
+        questions.forEach((q, i) => {
+          const item = document.createElement("div");
+          item.className = "drawer-item";
+          item.dataset.index = i;
+          if (isVideoUrl(q.image)) {
+            const vid = document.createElement("video");
+            vid.src = q.image;
+            vid.muted = true;
+            vid.preload = "metadata";
+            vid.style.pointerEvents = "none";
+            item.appendChild(vid);
+          } else if (q.image) {
+            const img = document.createElement("img");
+            img.src = q.image;
+            img.alt = "";
+            img.onerror = () => {
+              img.style.display = "none";
+            };
+            item.appendChild(img);
+          } else {
+            const ph = document.createElement("div");
+            ph.style.cssText = `width:100%;height:90px;background:${
+              q.bgColor || "#1a1a2e"
+            };display:flex;align-items:center;justify-content:center;`;
+            const icon = document.createElement("span");
+            icon.textContent =
+              q.type === "bit" ? "🧩" : q.type === "multiple" ? "🔤" : "❓";
+            icon.style.fontSize = "2rem";
+            ph.appendChild(icon);
+            item.appendChild(ph);
+          }
+          const lbl = document.createElement("div");
+          lbl.className = "drawer-item-label";
+          lbl.textContent = q.question
+            ? q.question.substring(0, 55) + (q.question.length > 55 ? "…" : "")
+            : `Slide ${i + 1}`;
+          item.appendChild(lbl);
+          item.addEventListener("click", (e) => {
+            e.stopPropagation();
+            currentIndex = i;
+            showQuestion(currentIndex);
+            closeDrawer();
+          });
+          drawerList.appendChild(item);
+        });
+        highlightDrawerItem(currentIndex);
+      }
+      function highlightDrawerItem(index) {
+        drawerList
+          .querySelectorAll(".drawer-item")
+          .forEach((el, i) => el.classList.toggle("active", i === index));
+      }
+
+      /* ── LOAD ── */
+      fetch("../content/content.json")
+        .then((r) => r.json())
+        .then((data) => {
+          questions = data.questions || [];
+          if (questions.length === 0) {
+            containerSingle.querySelector(".q-text").textContent =
+              "No questions found in content.json";
+            singleContainer.classList.remove("hidden");
+            return;
+          }
+          buildDrawerList();
+          showQuestion(0);
+        })
+        .catch((err) => {
+          console.error("Error loading questions:", err);
+          containerSingle.querySelector(".q-text").textContent =
+            "Failed to load content.json";
+          singleContainer.classList.remove("hidden");
+        });
+
+      function handleEnterToggle() {
+        const q = questions[currentIndex];
+        if (!q) return;
+        if (q.type === "single") containerSingle.click();
+        else if (q.type === "multiple") advanceMultipleState();
+        else if (q.type === "bit") bitClickZone.click();
+      }
+
+      let drawerCursorIndex = 0;
+      function openDrawerWithCursor() {
+        drawerCursorIndex = currentIndex;
+        openDrawer();
+        updateDrawerCursor(drawerCursorIndex);
+      }
+      function updateDrawerCursor(index) {
+        const items = drawerList.querySelectorAll(".drawer-item");
+        items.forEach((el, i) => el.classList.toggle("cursor", i === index));
+        const target = items[index];
+        if (target)
+          target.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      }
+
+      document.addEventListener("keydown", (e) => {
+        const key = e.key;
+
+        if (drawerOpen) {
+          if (
+            [
+              "ArrowUp",
+              "ArrowDown",
+              "ArrowLeft",
+              "ArrowRight",
+              "Enter",
+              "Escape",
+            ].includes(key)
+          ) {
+            e.preventDefault();
+          }
+
+          switch (key) {
+            case "ArrowUp":
+            case "ArrowLeft":
+              drawerCursorIndex = Math.max(0, drawerCursorIndex - 1);
+              updateDrawerCursor(drawerCursorIndex);
+              break;
+            case "ArrowDown":
+            case "ArrowRight":
+              drawerCursorIndex = Math.min(
+                questions.length - 1,
+                drawerCursorIndex + 1
+              );
+              updateDrawerCursor(drawerCursorIndex);
+              break;
+            case "Enter":
+              currentIndex = drawerCursorIndex;
+              showQuestion(currentIndex);
+              closeDrawer();
+              break;
+            case "Escape":
+              closeDrawer();
+              break;
+          }
+          return;
+        }
+
+        if (notesOpen) {
+          if (["ArrowUp", "ArrowDown", "Escape"].includes(key)) {
+            e.preventDefault();
+          }
+
+          const nb = document.getElementById("notes-body");
+
+          switch (key) {
+            case "ArrowUp":
+              nb.scrollBy({ top: -80, behavior: "smooth" });
+              break;
+            case "ArrowDown":
+              closeNotes();
+              break;
+            case "Escape":
+              closeNotes();
+              break;
+          }
+          return;
+        }
+
+        if (["ArrowUp", "ArrowDown"].includes(key)) e.preventDefault();
+
+        switch (key) {
+          case "ArrowLeft":
+            clearRevealTimeouts();
+            if (currentIndex > 0) {
+              currentIndex--;
+              showQuestion(currentIndex);
+            } else goHome();
+            break;
+          case "ArrowRight":
+            clearRevealTimeouts();
+            if (currentIndex < questions.length - 1) {
+              currentIndex++;
+              showQuestion(currentIndex);
+            }
+            break;
+          case "ArrowUp":
+            if (!drawerOpen) openDrawerWithCursor();
+            break;
+          case "ArrowDown":
+            notesOpen ? closeNotes() : openNotes();
+            break;
+          case "Enter":
+            handleEnterToggle();
+            break;
+        }
+      });
+    </script>
+  </body>
+</html>

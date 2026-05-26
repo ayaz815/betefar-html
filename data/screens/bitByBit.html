@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bit Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      @font-face {
+        font-family: "AgencyFB";
+        src: url("../fonts/AGENCYB.TTF") format("truetype");
+      }
+
+      @font-face {
+        font-family: "AGENCYR";
+        src: url("../fonts/AGENCYR.TTF") format("truetype");
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: black;
+        overflow: hidden;
+      }
+
+      .image-piece {
+        opacity: 0;
+        transition: opacity 0.28s ease-in-out;
+        background-size: 100% 100%;
+      }
+
+      .nav-area {
+        position: absolute;
+        top: 0;
+        width: 20%;
+        height: 100%;
+        z-index: 5;
+        cursor: pointer;
+      }
+
+      #nav-left {
+        left: 0;
+      }
+
+      #nav-right {
+        right: 0;
+      }
+
+      #blackScreen {
+        position: absolute;
+        inset: 0;
+        background: black;
+        z-index: 30;
+        color: white;
+        font-family: "AgencyFB";
+        font-size: 2rem;
+        opacity: 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.6s ease-in-out;
+      }
+    </style>
+  </head>
+
+  <body class="flex justify-center items-center bg-black h-screen">
+    <div class="relative w-full h-full flex flex-col justify-end items-center">
+      <button
+        id="muteBtn"
+        class="absolute top-0 left-1/2 size-[30%] -translate-x-1/2 text-white p-3 rounded-lg text-sm hover:bg-black/40 transition z-20"
+      ></button>
+
+      <button
+        id="toggleImageBtn"
+        class="absolute top-[35%] left-1/2 size-[30%] -translate-x-1/2 text-white p-3 rounded-lg text-sm hover:bg-black/40 transition z-20"
+      ></button>
+
+      <div id="nav-left" class="nav-area hover:bg-black/40"></div>
+      <div id="nav-right" class="nav-area hover:bg-black/40"></div>
+
+      <div
+        id="textDiv"
+        class="bg-black/50 p-5 text-white text-4xl mb-[5%] cursor-pointer opacity-100 transition-opacity duration-300 z-10 text-center font-[AgencyFB]"
+      >
+        Loading...
+      </div>
+
+      <div
+        id="imageDiv"
+        class="hidden w-full h-full absolute top-0 left-0"
+      ></div>
+
+      <div id="blackScreen"></div>
+    </div>
+
+    <script>
+      const textDiv = document.getElementById("textDiv");
+      const imageDiv = document.getElementById("imageDiv");
+      const muteBtn = document.getElementById("muteBtn");
+      const navLeft = document.getElementById("nav-left");
+      const navRight = document.getElementById("nav-right");
+      const blackScreen = document.getElementById("blackScreen");
+      const toggleImageBtn = document.getElementById("toggleImageBtn");
+
+      let currentIndex = 0;
+      let isMuted = false;
+      let audio = new Audio();
+      let bitQuestions = [];
+      let imageVisible = false;
+      let pieces = [];
+
+      let pieceSize = "large";
+
+      function getGridSize() {
+        switch (pieceSize) {
+          case "small":
+            return 12; // many small pieces
+          case "large":
+            return 4; // few big pieces
+          default:
+            return 8; // normal
+        }
+      }
+
+      function createGrid() {
+        pieces = [];
+        imageDiv.innerHTML = "";
+
+        const size = getGridSize();
+        imageDiv.style.display = "grid";
+        imageDiv.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        imageDiv.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+
+        for (let y = 0; y < size; y++) {
+          for (let x = 0; x < size; x++) {
+            const piece = document.createElement("div");
+            piece.classList.add("image-piece");
+
+            piece.style.backgroundSize = `${size * 100}% ${size * 100}%`;
+            piece.style.backgroundPosition = `${(x * 100) / (size - 1)}% ${
+              (y * 100) / (size - 1)
+            }%`;
+
+            imageDiv.appendChild(piece);
+            pieces.push(piece);
+          }
+        }
+      }
+
+      function showBitQuestion(i) {
+        const q = bitQuestions[i];
+
+        textDiv.textContent = q.question;
+        textDiv.classList.remove("hidden");
+        textDiv.style.opacity = 1;
+
+        createGrid();
+
+        pieces.forEach((p) => {
+          p.style.backgroundImage = `url('${q.image}')`;
+          p.style.opacity = 0;
+        });
+
+        audio.pause();
+        audio = new Audio(q.audio);
+        audio.muted = isMuted;
+        audio.play().catch(() => {});
+
+        imageDiv.classList.add("hidden");
+        toggleImageBtn.textContent = "Show image";
+        imageVisible = false;
+      }
+
+      function fadeOutGrid(callback) {
+        const order = [...pieces].sort(() => Math.random() - 0.5);
+        const duration = 2500;
+        const step = duration / order.length;
+
+        order.forEach((piece, i) => {
+          setTimeout(() => {
+            piece.style.opacity = 0;
+            if (i === order.length - 1 && callback) callback();
+          }, i * step);
+        });
+      }
+
+      toggleImageBtn.addEventListener("click", () => {
+        const q = bitQuestions[currentIndex];
+
+        if (!imageVisible) {
+          textDiv.style.opacity = 0;
+          setTimeout(() => {
+            textDiv.classList.add("hidden");
+            imageDiv.classList.remove("hidden");
+            pieces.forEach((piece) => (piece.style.opacity = 1));
+          }, 200);
+
+          toggleImageBtn.textContent = "Hide image";
+          imageVisible = true;
+        } else {
+          fadeOutGrid(() => {
+            imageDiv.classList.add("hidden");
+            textDiv.classList.remove("hidden");
+            textDiv.textContent = q.answer;
+            textDiv.style.opacity = 1;
+          });
+
+          toggleImageBtn.textContent = "Show image";
+          imageVisible = false;
+        }
+      });
+
+      navLeft.onclick = () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+          showBitQuestion(currentIndex);
+        }
+      };
+
+      navRight.onclick = () => {
+        if (currentIndex < bitQuestions.length - 1) {
+          currentIndex++;
+          showBitQuestion(currentIndex);
+        }
+      };
+
+      muteBtn.onclick = () => {
+        isMuted = !isMuted;
+        audio.muted = isMuted;
+        muteBtn.textContent = isMuted ? "🔇" : "🔊";
+      };
+
+      fetch("../content/content.json")
+        .then((r) => r.json())
+        .then((data) => {
+          bitQuestions = data.bit;
+          showBitQuestion(0);
+        });
+    </script>
+  </body>
+</html>

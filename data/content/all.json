@@ -1,0 +1,264 @@
+{
+  "single": [
+    {
+      "question": "What is the capital of Japan?",
+      "image": "../assets/bg.jpg",
+      "audio": "../assets/akcent.mp3"
+    },
+    {
+      "question": "Who developed the theory of relativity?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/einstein.mp3"
+    },
+    {
+      "question": "Which animal is known as the King of the Jungle?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/lion.mp3"
+    },
+    {
+      "question": "What planet is known as the Red Planet?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/mars.mp3"
+    },
+    {
+      "question": "What is the largest ocean on Earth?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/pacific.mp3"
+    },
+    {
+      "question": "Who painted the Starry Night?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/starrynight.mp3"
+    },
+    {
+      "question": "What gas do plants release during photosynthesis?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/photosynthesis.mp3"
+    },
+    {
+      "question": "Which country is famous for the Eiffel Tower?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/eiffeltower.mp3"
+    },
+    {
+      "question": "Who invented the telephone?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/telephone.mp3"
+    },
+    {
+      "question": "Which instrument has black and white keys?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/piano.mp3"
+    },
+    {
+      "question": "What is the largest desert in the world?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/sahara.mp3"
+    },
+    {
+      "question": "What do bees produce?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/bees.mp3"
+    },
+    {
+      "question": "Who was the first man to walk on the moon?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/moon.mp3"
+    },
+    {
+      "question": "Which animal is known for its black and white stripes?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/zebra.mp3"
+    },
+    {
+      "question": "What is the hardest natural substance on Earth?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/diamond.mp3"
+    },
+    {
+      "question": "Which continent is known as the Land Down Under?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/australia.mp3"
+    }
+  ],
+  "multiple": [
+    {
+      "question": "Which planet is known as the Red Planet?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/mars.mp3",
+      "choices": ["Mars", "Jupiter", "Saturn"]
+    },
+    {
+      "question": "What is the largest mammal in the world?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/bluewhale.mp3",
+      "choices": ["Elephant", "Blue Whale", "Giraffe"]
+    },
+    {
+      "question": "Which gas do humans exhale?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/co2.mp3",
+      "choices": ["Oxygen", "Carbon Dioxide", "Nitrogen"]
+    },
+    {
+      "question": "What is the capital city of Italy?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/rome.mp3",
+      "choices": ["Rome", "Paris", "Madrid"]
+    },
+    {
+      "question": "Which animal lays eggs?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/bird.mp3",
+      "choices": ["Cat", "Dog", "Bird"]
+    },
+    {
+      "question": "Which instrument has strings?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/guitar.mp3",
+      "choices": ["Drum", "Guitar", "Flute"]
+    },
+    {
+      "question": "What is the main ingredient in guacamole?",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/avocado.mp3",
+      "choices": ["Avocado", "Tomato", "Cucumber"]
+    },
+    {
+      "question": "Which color is formed by mixing red and blue?",
+      "image": "https://example.com/images/purple.jpg",
+      "audio": "https://example.com/audio/purple.mp3",
+      "choices": ["Purple", "Green", "Orange"]
+    },
+    {
+      "question": "Which country is famous for sushi?",
+      "image": "https://example.com/images/sushi.jpg",
+      "audio": "https://example.com/audio/sushi.mp3",
+      "choices": ["China", "Japan", "Thailand"]
+    },
+    {
+      "question": "Which shape has three sides?",
+      "image": "https://example.com/images/triangle.jpg",
+      "audio": "https://example.com/audio/triangle.mp3",
+      "choices": ["Square", "Triangle", "Circle"]
+    },
+    {
+      "question": "Which metal is used to make coins?",
+      "image": "https://example.com/images/coin.jpg",
+      "audio": "https://example.com/audio/coin.mp3",
+      "choices": ["Copper", "Wood", "Plastic"]
+    },
+    {
+      "question": "Which is the fastest land animal?",
+      "image": "https://example.com/images/cheetah.jpg",
+      "audio": "https://example.com/audio/cheetah.mp3",
+      "choices": ["Cheetah", "Lion", "Horse"]
+    },
+    {
+      "question": "What do we call frozen water?",
+      "image": "https://example.com/images/ice.jpg",
+      "audio": "https://example.com/audio/ice.mp3",
+      "choices": ["Snow", "Ice", "Steam"]
+    },
+    {
+      "question": "Which planet is closest to the Sun?",
+      "image": "https://example.com/images/mercury.jpg",
+      "audio": "https://example.com/audio/mercury.mp3",
+      "choices": ["Earth", "Venus", "Mercury"]
+    },
+    {
+      "question": "Which animal gives us wool?",
+      "image": "https://example.com/images/sheep.jpg",
+      "audio": "https://example.com/audio/sheep.mp3",
+      "choices": ["Cow", "Sheep", "Goat"]
+    },
+    {
+      "question": "Which part of the plant makes food?",
+      "image": "https://example.com/images/leaves.jpg",
+      "audio": "https://example.com/audio/leaves.mp3",
+      "choices": ["Roots", "Stem", "Leaves"]
+    }
+  ],
+  "bit": [
+    {
+      "question": "The sun rises in the east.",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/sunrise.mp3"
+    },
+    {
+      "question": "Water boils at 100 degrees Celsius.",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/boiling.mp3"
+    },
+    {
+      "question": "Bats are blind.",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/bat.mp3"
+    },
+    {
+      "question": "Earth is larger than Mars.",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/earth.mp3"
+    },
+    {
+      "question": "The Great Wall of China is visible from space.",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/greatwall.mp3"
+    },
+    {
+      "question": "Fish can breathe underwater using gills.",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/fish.mp3"
+    },
+    {
+      "question": "Lightning never strikes the same place twice.",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/lightning.mp3"
+    },
+    {
+      "question": "Humans need oxygen to survive.",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/oxygen.mp3"
+    },
+    {
+      "question": "The moon is a planet.",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/moon.mp3"
+    },
+    {
+      "question": "Sound travels faster than light.",
+      "image": "../assets/bg.jpg",
+      "audio": "https://example.com/audio/sound.mp3"
+    },
+    {
+      "question": "Plants need sunlight to make food.",
+      "image": "https://example.com/images/sunlight.jpg",
+      "audio": "https://example.com/audio/sunlight.mp3"
+    },
+    {
+      "question": "Penguins can fly.",
+      "image": "https://example.com/images/penguin.jpg",
+      "audio": "https://example.com/audio/penguin.mp3"
+    },
+    {
+      "question": "The Earth orbits around the Sun.",
+      "image": "https://example.com/images/solar.jpg",
+      "audio": "https://example.com/audio/solar.mp3"
+    },
+    {
+      "question": "Humans have three lungs.",
+      "image": "https://example.com/images/lungs.jpg",
+      "audio": "https://example.com/audio/lungs.mp3"
+    },
+    {
+      "question": "Gold is heavier than water.",
+      "image": "https://example.com/images/gold.jpg",
+      "audio": "https://example.com/audio/gold.mp3"
+    },
+    {
+      "question": "Sharks are mammals.",
+      "image": "https://example.com/images/shark.jpg",
+      "audio": "https://example.com/audio/shark.mp3"
+    }
+  ]
+}
